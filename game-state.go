@@ -6,34 +6,24 @@ import (
 
 const X_SPEED = 1
 
-type box struct {
-	x, y, h, w int
-}
-
-func (b box) leftBorderPos() int {
-	return b.x
-}
-
-func (b box) rightBorderPos() int {
-	return b.x + b.w
-}
+// hmmm right now everything needs to know where it is
+// which is kinda sus?
 
 type gameState struct {
-	wave          box
-	gameBoundary  box
+	wave          Wave
+	gameBoundary  Box
 	waveDirection int
 }
 
 func (g gameState) advance() AbstractGameState {
 	dir, bumped := g.nextDirection()
 	g.waveDirection = dir
-	var nextWave = getNextWavePos(g.wave, g.waveDirection, bumped)
-	g.wave = nextWave
-
-	return g
+	var nextWave = getNextWavePos(g.wave.boundingBox, g.waveDirection, bumped)
+	g.wave.boundingBox = nextWave
+	return g // pointers when?
 }
 
-func getNextWavePos(wave box, direction int, bumped bool) box {
+func getNextWavePos(currWavePos Box, direction int, bumped bool) Box {
 	yShift := 0
 	if bumped {
 		yShift = 1
@@ -44,7 +34,7 @@ func getNextWavePos(wave box, direction int, bumped bool) box {
 		xShift = 0
 	}
 
-	return box{x: wave.x + xShift, y: wave.y + yShift, h: wave.h, w: wave.w}
+	return Box{x: currWavePos.x + xShift, y: currWavePos.y + yShift, h: currWavePos.h, w: currWavePos.w}
 }
 
 func (g gameState) nextDirection() (int, bool) {
@@ -70,18 +60,13 @@ func (g gameState) begin() {
 }
 
 func (g gameState) getUI() []AbstractUiComponent {
-	return []AbstractUiComponent{
-		NewSpriteUIComponent("╭", Point{x: g.wave.x, y: g.wave.y}),                       // top left
-		NewSpriteUIComponent("╮", Point{x: g.wave.x + g.wave.w, y: g.wave.y}),            // top right
-		NewSpriteUIComponent("╰", Point{x: g.wave.x, y: g.wave.y + g.wave.h}),            // bot left
-		NewSpriteUIComponent("╯", Point{x: g.wave.x + g.wave.w, y: g.wave.y + g.wave.h}), // bot right
-	}
+	return g.wave.getUI()
 }
 
 func NewGameState() AbstractGameState {
 	return gameState{
-		wave:          box{x: 1, y: 1, h: 4, w: 10},
-		gameBoundary:  box{x: 0, y: 0, h: 20, w: 100},
+		wave:          Wave{boundingBox: Box{x: 1, y: 1, h: 4, w: 10}},
+		gameBoundary:  Box{x: 0, y: 0, h: 20, w: 100},
 		waveDirection: 1,
 	}
 }
