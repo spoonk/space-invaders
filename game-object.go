@@ -1,7 +1,7 @@
 package main
 
 type GameObject interface {
-	moveTo()
+	moveTo(Point)
 	topLeft() Point
 	getUI() []AbstractUiComponent
 }

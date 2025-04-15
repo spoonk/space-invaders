@@ -28,7 +28,3 @@ func (w Wave) getUI() []AbstractUiComponent {
 		NewSpriteUIComponent("╯", Point{x: w.boundingBox.x + w.boundingBox.w, y: w.boundingBox.y + w.boundingBox.h}), // bot right
 	}
 }
-
-func NewWave() GameObject {
-	return Wave{}
-}
