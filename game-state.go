@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math/rand/v2"
 )
 
 const X_SPEED = 1
@@ -22,13 +21,14 @@ func (g gameState) advance() AbstractGameState {
 	g.waveDirection = dir
 	var nextWave = getNextWavePos(g.wave.boundingBox, g.waveDirection, bumped)
 	g.wave.boundingBox = nextWave
-	g.movePlayer()
+	// g.movePlayer()
+	g.player.move()
 	return g // pointers when?
 }
 
-func (g gameState) movePlayer() {
-	g.player.moveTo(Point{x: rand.IntN(100), y: rand.IntN(100)})
-}
+// func (g gameState) movePlayer() {
+// 	g.player.moveTo(Point{x: rand.IntN(100), y: rand.IntN(100)})
+// }
 
 func getNextWavePos(currWavePos Box, direction int, bumped bool) Box {
 	yShift := 0

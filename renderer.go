@@ -14,7 +14,6 @@ func (r Renderer) draw(ui []AbstractUiComponent) {
 	for i := 0; i < len(ui); i++ {
 		elm := ui[i]
 		text := elm.getRasterized()
-		// fmt.Print(text)
 		drawAtPosition(text, elm.getTopLeft())
 	}
 }
