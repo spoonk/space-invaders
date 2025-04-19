@@ -44,12 +44,10 @@ func (k *KeyboardInputController) onKeypressReceive(char rune) {
 
 func (k *KeyboardInputController) getLastKeypress() rune {
 	return k.lastPressedKey
-	// return '0', errors.New("No last pressed key")
 }
 
 func (k *KeyboardInputController) getCurrentKeypress() rune {
 	return k.currentKeyPress
-	// return '0', errors.New("No key currently pressed")
 }
 
 func NewKeyBoardInputController() *KeyboardInputController {

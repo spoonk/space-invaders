@@ -8,6 +8,8 @@ import (
 
 const NANOSECOND = 1000000
 
+var controller *KeyboardInputController
+
 // const FRAME_DURATION = 1000 / 60
 const FRAME_DURATION = 1000 / 10
 
@@ -50,4 +52,8 @@ func testKeyboard() {
 		fmt.Printf("Currently pressed pressed: %c\n", controller.getCurrentKeypress())
 		time.Sleep(FRAME_DURATION * NANOSECOND)
 	}
+}
+
+func GetController() *KeyboardInputController {
+	return controller
 }
