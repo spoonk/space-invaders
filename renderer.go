@@ -9,7 +9,7 @@ const HIDE_CURSOR = "\x1b[?25l"
 
 type Renderer struct{}
 
-func (r Renderer) draw(ui []AbstractUiComponent) {
+func (r *Renderer) draw(ui []AbstractUiComponent) {
 	clearScreen()
 	for i := 0; i < len(ui); i++ {
 		elm := ui[i]

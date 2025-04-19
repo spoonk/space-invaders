@@ -2,6 +2,7 @@ package main
 
 import (
 	// "fmt"
+	"fmt"
 	"time"
 )
 
@@ -37,9 +38,16 @@ func testKeyboard() {
 	controller := NewKeyBoardInputController()
 	controller.init(handler)
 
+	r := Renderer{}
+	r.init()
+
 	go handler.loop()
 
 	for {
-		// just wait
+
+		r.draw([]AbstractUiComponent{})
+		fmt.Printf("Last pressed: %c\n", controller.getLastKeypress())
+		fmt.Printf("Currently pressed pressed: %c\n", controller.getCurrentKeypress())
+		time.Sleep(FRAME_DURATION * NANOSECOND)
 	}
 }
