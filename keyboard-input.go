@@ -51,14 +51,14 @@ func (k *KeyboardInputHandler) readInput() (byte, error) {
 
 func byteToCharacter(b byte) (rune, error) {
 	switch b {
-	case 97:
-		return 'a', nil
-	case 100:
-		return 'd', nil
 	case 119:
 		return 'w', nil
+	case 97:
+		return 'a', nil
 	case 115:
 		return 's', nil
+	case 100:
+		return 'd', nil
 	}
 
 	return '0', fmt.Errorf("No registered mapping for byte %b", b)
