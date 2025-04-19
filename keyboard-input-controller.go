@@ -1,60 +1,38 @@
 package main
 
 import (
+	"errors"
 	"fmt"
-	"os"
-	"syscall"
 	"time"
-
-	"golang.org/x/term"
 )
 
 const NO_INPUT = -1
 
 type KeyboardInputController struct {
-	cnt int
+	lastPressedKey  rune
+	currentKeyPress rune
+	ticket          *time.Timer
 }
 
-func (k *KeyboardInputController) refresh() {
-	var b []byte = make([]byte, 1)
-
-	sz, err := os.Stdin.Read(b)
-
-	if err == nil {
-		if sz == 0 {
-			kp = NO_INPUT
-		} else {
-			kp = rune(b[0])
-		}
-	} else {
-		// assume EAGAIN lol
-		// EAGAIN https://stackoverflow.com/questions/4058368/what-does-eagain-mean
-		kp = NO_INPUT
+func (k *KeyboardInputController) init(handler *KeyboardInputHandler) {
+	for _, key := range []rune{'w', 'a', 's', 'd'} {
+		handler.registerCallback(key, k.callbackFunction)
 	}
 }
 
-func (k *KeyboardInputController) init() {
-	fd := int(os.Stdin.Fd())
-	_, err := term.MakeRaw(fd)
-	if err != nil {
-		fmt.Println("Error setting raw mode:", err)
-		return
-	}
-
-	err = syscall.SetNonblock(fd, true)
-	if err != nil {
-		print(err)
-	}
-
+func (k *KeyboardInputController) callbackFunction(char rune) {
+	// set/reset timer here
+	fmt.Printf("you outputted: %c\n", char)
 }
 
-func (k *KeyboardInputController) refreshEternally() {
-	for {
-		k.refresh()
-		time.Sleep(NANOSECOND * 20)
-	}
+func (k *KeyboardInputController) getLastKeypress() (rune, error) {
+	return '0', errors.New("No last pressed key")
 }
 
-func newKeyBoardInputController() *KeyboardInputController {
-	return &KeyboardInputController{cnt: 0}
+func (k *KeyboardInputController) getCurrentKeypress() (rune, error) {
+	return '0', errors.New("No key currently pressed")
+}
+
+func NewKeyBoardInputController() *KeyboardInputController {
+	return &KeyboardInputController{}
 }

@@ -14,7 +14,7 @@ import (
 type KeyboardInputHandler struct {
 	oldTerminalState *term.State
 	inputFile        *os.File
-	callbacks        map[rune][]func()
+	callbacks        map[rune][]func(rune)
 }
 
 func (k *KeyboardInputHandler) init() {
@@ -29,10 +29,10 @@ func (k *KeyboardInputHandler) init() {
 }
 
 func NewKeyboardInput() *KeyboardInputHandler {
-	return &KeyboardInputHandler{inputFile: os.Stdin}
+	return &KeyboardInputHandler{inputFile: os.Stdin, callbacks: make(map[rune][]func(rune))}
 }
 
-func (k *KeyboardInputHandler) registerCallback(char rune, fun func()) {
+func (k *KeyboardInputHandler) registerCallback(char rune, fun func(rune)) {
 	k.callbacks[char] = append(k.callbacks[char], fun)
 }
 
@@ -71,7 +71,7 @@ func byteToCharacter(b byte) (rune, error) {
 func (k *KeyboardInputHandler) fireEventsForChar(char rune) {
 	callbacks := k.callbacks[char]
 	for _, callback := range callbacks {
-		callback()
+		callback(char)
 	}
 }
 
