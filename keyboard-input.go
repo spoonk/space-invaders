@@ -32,6 +32,10 @@ func NewKeyboardInput() *KeyboardInputHandler {
 	return &KeyboardInputHandler{inputFile: os.Stdin}
 }
 
+func (k *KeyboardInputHandler) registerCallback(char rune, fun func()) {
+	k.callbacks[char] = append(k.callbacks[char], fun)
+}
+
 func (k *KeyboardInputHandler) cleanup() {
 	term.Restore(int(k.inputFile.Fd()), k.oldTerminalState)
 }
