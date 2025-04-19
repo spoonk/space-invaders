@@ -2,10 +2,13 @@ package main
 
 import (
 	// "fmt"
+	"fmt"
 	"time"
 )
 
 const NANOSECOND = 1000000
+
+var controller *KeyboardInputController
 
 // const FRAME_DURATION = 1000 / 60
 const FRAME_DURATION = 1000 / 10
@@ -13,19 +16,14 @@ const FRAME_DURATION = 1000 / 10
 var kp = rune(NO_INPUT)
 
 func main() {
-	// testKeyboard()
-	gameLoop()
+	testKeyboard()
+	// gameLoop()
 }
 
 func gameLoop() {
 	r := Renderer{}
 	r.init()
 	state := NewGameState()
-	keyboardInput := newKeyBoardInputController()
-	keyboardInput.init()
-
-	go keyboardInput.refreshEternally()
-	// go asyncReadKeyboard()
 
 	for {
 		state = state.advance()
@@ -36,21 +34,26 @@ func gameLoop() {
 }
 
 func testKeyboard() {
-	//
-	// keyboardInput := newKeyBoardInputController()
-	// keyboardInput.init()
-	// go keyboardInput.refreshEternally()
-	// // go asyncReadKeyboard()
-	// for {
-	// 	clearScreen()
-	// 	fmt.Println(kp)
-	// 	time.Sleep(time.Duration(FRAME_DURATION * NANOSECOND))
-	// }
+	handler := NewKeyboardInput()
+	handler.init()
+
+	controller := NewKeyBoardInputController()
+	controller.init(handler)
+
+	r := Renderer{}
+	r.init()
+
+	go handler.loop()
+
+	for {
+
+		r.draw([]AbstractUiComponent{})
+		fmt.Printf("Last pressed: %c\n", controller.getLastKeypress())
+		fmt.Printf("Currently pressed pressed: %c\n", controller.getCurrentKeypress())
+		time.Sleep(FRAME_DURATION * NANOSECOND)
+	}
 }
 
-// dummy fn to consume last key pressed
-// func asyncReadKeyboard() {
-// 	for {
-// 		// kp = key
-// 	}
-// }
+func GetController() *KeyboardInputController {
+	return controller
+}

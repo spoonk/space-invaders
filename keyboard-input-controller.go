@@ -1,60 +1,57 @@
 package main
 
 import (
-	"fmt"
-	"os"
-	"syscall"
+	// "errors"
+	// "fmt"
 	"time"
-
-	"golang.org/x/term"
 )
 
+// todo: maybe some rising edge timer??
+//
+//	if we just started pressing a new key, repeat that key for 200ms?
+//	cuz the keyboard needs time to warm up...
+
+const TIMER_DURATION_MS = 100 * NANOSECOND
 const NO_INPUT = -1
 
 type KeyboardInputController struct {
-	cnt int
+	lastPressedKey   rune
+	currentKeyPress  rune
+	pressExpireTimer *time.Timer
 }
 
-func (k *KeyboardInputController) refresh() {
-	var b []byte = make([]byte, 1)
-
-	sz, err := os.Stdin.Read(b)
-
-	if err == nil {
-		if sz == 0 {
-			kp = NO_INPUT
-		} else {
-			kp = rune(b[0])
-		}
-	} else {
-		// assume EAGAIN lol
-		// EAGAIN https://stackoverflow.com/questions/4058368/what-does-eagain-mean
-		kp = NO_INPUT
+func (k *KeyboardInputController) init(handler *KeyboardInputHandler) {
+	for _, key := range []rune{'w', 'a', 's', 'd'} {
+		handler.registerCallback(key, k.onKeypressReceive)
 	}
 }
 
-func (k *KeyboardInputController) init() {
-	fd := int(os.Stdin.Fd())
-	_, err := term.MakeRaw(fd)
-	if err != nil {
-		fmt.Println("Error setting raw mode:", err)
-		return
-	}
-
-	err = syscall.SetNonblock(fd, true)
-	if err != nil {
-		print(err)
-	}
-
+func (k *KeyboardInputController) waitForTimer() {
+	<-k.pressExpireTimer.C
+	k.currentKeyPress = NO_INPUT
 }
 
-func (k *KeyboardInputController) refreshEternally() {
-	for {
-		k.refresh()
-		time.Sleep(NANOSECOND * 20)
+func (k *KeyboardInputController) onKeypressReceive(char rune) {
+	isExistingWaiter := k.pressExpireTimer.Stop() // should be a thread waiting for this timer already
+	k.pressExpireTimer.Reset(TIMER_DURATION_MS)
+	if !isExistingWaiter {
+		go k.waitForTimer()
 	}
+
+	k.currentKeyPress = char
+	k.lastPressedKey = char
 }
 
-func newKeyBoardInputController() *KeyboardInputController {
-	return &KeyboardInputController{cnt: 0}
+func (k *KeyboardInputController) getLastKeypress() rune {
+	return k.lastPressedKey
+}
+
+func (k *KeyboardInputController) getCurrentKeypress() rune {
+	return k.currentKeyPress
+}
+
+func NewKeyBoardInputController() *KeyboardInputController {
+	timer := time.NewTimer(0)
+	timer.Stop()
+	return &KeyboardInputController{pressExpireTimer: timer}
 }
