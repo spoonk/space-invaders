@@ -1,7 +1,8 @@
 package main
 
 type Player struct {
-	pos Point
+	pos        Point
+	controller *KeyboardInputController
 }
 
 func (p *Player) moveTo(newPos Point) {
@@ -17,16 +18,16 @@ func (p *Player) getUI() []AbstractUiComponent {
 }
 
 func NewPlayer() *Player {
-	return &Player{pos: Point{50, 100}}
+	return &Player{pos: Point{50, 100}, controller: GetController()}
 }
 
 func (p *Player) move() {
-	var press = kp
-	if press == 97 {
-		currPos := p.pos
+	press := p.controller.getCurrentKeypress()
+
+	currPos := p.pos
+	if press == 'a' {
 		p.moveTo(Point{x: currPos.x - 1, y: currPos.y})
-	} else if press == 100 {
-		currPos := p.pos
+	} else if press == 'd' {
 		p.moveTo(Point{x: currPos.x + 1, y: currPos.y})
 	}
 }
