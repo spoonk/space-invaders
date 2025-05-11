@@ -4,9 +4,8 @@ package main
 import (
 	"errors"
 	"fmt"
-	"os"
-
 	"golang.org/x/term"
+	"os"
 )
 
 // detect keypress, fire event when one is pressed

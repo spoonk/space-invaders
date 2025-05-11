@@ -16,8 +16,9 @@ const FRAME_DURATION = 1000 / 10
 var kp = rune(NO_INPUT)
 
 func main() {
+	Init()
 	// testKeyboard()
-	gameLoop()
+	// gameLoop()
 }
 
 func gameLoop() {
