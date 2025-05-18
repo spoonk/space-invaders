@@ -25,6 +25,7 @@ func (k *KeyboardInputHandler) init() {
 	}
 
 	k.oldTerminalState = oldState
+	k.registerCallback('q', func(_ rune) { k.cleanup() })
 }
 
 func NewKeyboardInput() *KeyboardInputHandler {
@@ -64,6 +65,8 @@ func byteToCharacter(b byte) (rune, error) {
 		return 'd', nil
 	case 32:
 		return ' ', nil
+	case 113:
+		return 'q', nil
 	}
 
 	return '0', fmt.Errorf("No registered mapping for byte %b", b)
