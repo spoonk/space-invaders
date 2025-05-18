@@ -5,7 +5,7 @@ import (
 )
 
 const X_SPEED = 1
-const DEBUG_BOUNDARY = true
+const DEBUG_BOUNDARY = false
 
 // game state is responsible for managing entities in the game
 // the involves removing things, creating things, ending the game, restarting it

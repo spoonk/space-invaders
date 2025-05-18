@@ -42,7 +42,7 @@ func getInvaders(topLeft *Point) [][]*Invader {
 	for i := range WAVE_HEIGHT {
 		invaderRow := []*Invader{}
 		for j := range WAVE_WIDTH {
-			invaderPos := topLeft.add(Point{x: j * INVADER_W_H, y: i * INVADER_W_H})
+			invaderPos := topLeft.add(Point{x: j * INVADER_W, y: i * INVADER_H})
 			invaderRow = append(invaderRow, NewInvader(invaderPos.x, invaderPos.y))
 		}
 		invaders = append(invaders, invaderRow)
@@ -64,9 +64,9 @@ func inferBoundingBox(gameBoundary *Box, invaders [][]*Invader) Box {
 			}
 
 			minX = min(minX, invader.topLeft().x)
-			maxX = max(maxX, invader.topLeft().x+INVADER_W_H)
+			maxX = max(maxX, invader.topLeft().x+INVADER_W)
 			minY = min(minY, invader.topLeft().y)
-			maxY = max(maxY, invader.topLeft().y+INVADER_W_H)
+			maxY = max(maxY, invader.topLeft().y+INVADER_H)
 		}
 	}
 
@@ -134,7 +134,9 @@ func (w *InvaderWave) isAtLateralBoundary() bool {
 
 func (w *InvaderWave) getUI() []AbstractUiComponent {
 	components := []AbstractUiComponent{}
-	components = append(components, w.boundingBox.getDebugUI()...)
+	if DEBUG_BOUNDARY {
+		components = append(components, w.boundingBox.getDebugUI()...)
+	}
 
 	for _, invaderRow := range w.invaders {
 		for _, invader := range invaderRow {

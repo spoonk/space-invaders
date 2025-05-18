@@ -6,8 +6,8 @@ type Invader struct {
 	isDead bool
 }
 
-// number of game tiles that an invader is tall & wide
-const INVADER_W_H = 3
+const INVADER_H = 1
+const INVADER_W = 3
 
 func NewInvader(xPos int, yPos int) *Invader {
 	return &Invader{pos: Point{x: int(xPos), y: int(yPos)}, value: 1, isDead: false}
@@ -20,7 +20,7 @@ func (i *Invader) moveBy(x int, y int) {
 }
 
 func (i *Invader) getUI() []AbstractUiComponent {
-	return []AbstractUiComponent{NewSpriteUIComponent("-VV-", i.topLeft())}
+	return []AbstractUiComponent{NewSpriteUIComponent("v", i.topLeft())}
 }
 
 func (i *Invader) topLeft() Point {
