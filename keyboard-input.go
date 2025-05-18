@@ -62,6 +62,8 @@ func byteToCharacter(b byte) (rune, error) {
 		return 's', nil
 	case 100:
 		return 'd', nil
+	case 32:
+		return ' ', nil
 	}
 
 	return '0', fmt.Errorf("No registered mapping for byte %b", b)

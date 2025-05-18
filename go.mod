@@ -3,7 +3,7 @@ module space-invaders
 go 1.24.1
 
 require (
-	github.com/progrium/darwinkit v0.5.0
+	github.com/eiannone/keyboard v0.0.0-20220611211555-0d226195f203
 	golang.org/x/term v0.31.0
 )
 
