@@ -12,6 +12,10 @@ func (b *Box) rightBorderPos() int {
 	return b.x + b.w
 }
 
+func (b *Box) getTopLeft() *Point {
+	return &Point{x: b.x, y: b.y}
+}
+
 func (b *Box) getDebugUI() []AbstractUiComponent {
 	components := []AbstractUiComponent{}
 

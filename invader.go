@@ -11,7 +11,7 @@ type Invader struct {
 // number of game tiles that an invader is tall & wide
 const INVADER_W_H = 3
 
-func NewInvader(xPos int32, yPos int32) *Invader {
+func NewInvader(xPos int, yPos int) *Invader {
 	return &Invader{topLeft: Point{x: int(xPos), y: int(yPos)}}
 }
 

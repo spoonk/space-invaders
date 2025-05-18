@@ -6,7 +6,7 @@ package main
 type InvaderWave struct {
 	boundingBox  Box
 	gameBoundary *Box
-	invaders     [][]Invader
+	invaders     [][]*Invader
 	currentDir   string
 }
 
@@ -22,14 +22,32 @@ const WAVE_WIDTH = 11
 
 // each wave has the exact same config of invaders
 func NewInvaderWave(gameBoundary *Box) *InvaderWave {
-	// each wave has the exact same config of invaders
-	// todo: instantiate all invaders, compute bounding box
-	return &InvaderWave{
-		boundingBox: Box{
-			x: INVADER_W_H, y: INVADER_W_H, h: WAVE_HEIGHT * INVADER_W_H, w: WAVE_WIDTH * INVADER_W_H,
-		},
-		gameBoundary: gameBoundary, currentDir: "LEFT",
+
+	// this process is backwards, the bounding box should be inferred from the set of invaders
+	waveBoundingBox := Box{
+		x: INVADER_W_H, y: INVADER_W_H, h: WAVE_HEIGHT * INVADER_W_H, w: WAVE_WIDTH * INVADER_W_H,
 	}
+	invaders := getInvaders(&waveBoundingBox)
+
+	return &InvaderWave{
+		boundingBox:  waveBoundingBox,
+		gameBoundary: gameBoundary,
+		currentDir:   "LEFT",
+		invaders:     invaders,
+	}
+}
+
+func getInvaders(waveBox *Box) [][]*Invader {
+	invaders := [][]*Invader{}
+	for i := range WAVE_HEIGHT {
+		invaderRow := []*Invader{}
+		for j := range WAVE_WIDTH {
+			invaderPos := waveBox.getTopLeft().add(Point{x: j * INVADER_W_H, y: i * INVADER_W_H})
+			invaderRow = append(invaderRow, NewInvader(invaderPos.x, invaderPos.y))
+		}
+		invaders = append(invaders, invaderRow)
+	}
+	return invaders
 }
 
 func (w *InvaderWave) BoundingBox() Box {
@@ -42,13 +60,27 @@ func (w *InvaderWave) update() {
 }
 
 func (w *InvaderWave) moveWave() {
+	yUpdate := 0
+	xUpdate := 0
 
 	if w.isAtLateralBoundary() {
 		w.currentDir = getOppositeDirection(w.currentDir)
-		w.boundingBox.y += 1
+		yUpdate = 1
 	}
+	xUpdate += getDirScalar(w.currentDir) * X_SPEED
 
-	w.boundingBox.x += getDirScalar(w.currentDir) * X_SPEED
+	w.boundingBox.x += xUpdate
+	w.boundingBox.y += yUpdate
+
+	w.moveInvaders(xUpdate, yUpdate)
+}
+
+func (w *InvaderWave) moveInvaders(x int, y int) {
+	for _, invaderRow := range w.invaders {
+		for _, invader := range invaderRow {
+			invader.moveBy(x, y)
+		}
+	}
 }
 
 func getDirScalar(dir string) int {
@@ -78,5 +110,14 @@ func (w *InvaderWave) isAtLateralBoundary() bool {
 }
 
 func (w *InvaderWave) getUI() []AbstractUiComponent {
-	return w.boundingBox.getDebugUI()
+	components := []AbstractUiComponent{}
+	components = append(components, w.boundingBox.getDebugUI()...)
+
+	for _, invaderRow := range w.invaders {
+		for _, invader := range invaderRow {
+			components = append(components, invader.getUI()...)
+		}
+	}
+
+	return components
 }
