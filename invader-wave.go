@@ -51,7 +51,7 @@ func getInvaders(topLeft *Point) [][]*Invader {
 }
 
 func inferBoundingBox(gameBoundary *Box, invaders [][]*Invader) Box {
-	// asertion: at least one invader alive
+	// assertion: at least one invader alive
 	minX := gameBoundary.x + gameBoundary.w
 	minY := gameBoundary.y + gameBoundary.h
 	maxX := 0
