@@ -10,7 +10,11 @@ type InvaderWave struct {
 	currentDir   string
 }
 
+// TODO: different types of invaders
+
 const Y_SPEED = 1
+const WAVE_HEIGHT = 5
+const WAVE_WIDTH = 11
 
 // wave needs to define a delta T for how much it should move..
 // should be hitching independent: project forward by dt, which can
@@ -20,7 +24,12 @@ const Y_SPEED = 1
 func NewInvaderWave(gameBoundary *Box) *InvaderWave {
 	// each wave has the exact same config of invaders
 	// todo: instantiate all invaders, compute bounding box
-	return &InvaderWave{boundingBox: Box{x: 1, y: 1, h: 4, w: 10}, gameBoundary: gameBoundary, currentDir: "LEFT"}
+	return &InvaderWave{
+		boundingBox: Box{
+			x: INVADER_W_H, y: INVADER_W_H, h: WAVE_HEIGHT * INVADER_W_H, w: WAVE_WIDTH * INVADER_W_H,
+		},
+		gameBoundary: gameBoundary, currentDir: "LEFT",
+	}
 }
 
 func (w *InvaderWave) BoundingBox() Box {
@@ -29,17 +38,13 @@ func (w *InvaderWave) BoundingBox() Box {
 
 func (w *InvaderWave) update() {
 	w.moveWave()
-	// move in current direction
 	// TODO: handle projecting forward later, for now naively move it
 }
 
 func (w *InvaderWave) moveWave() {
 
 	if w.isAtLateralBoundary() {
-		// reverse direction
 		w.currentDir = getOppositeDirection(w.currentDir)
-
-		// move down by 1
 		w.boundingBox.y += 1
 	}
 
@@ -63,20 +68,15 @@ func getOppositeDirection(dir string) string {
 }
 
 func (w *InvaderWave) isAtLateralBoundary() bool {
-	if w.currentDir == "LEFT" && w.boundingBox.x <= w.gameBoundary.x {
+	if w.currentDir == "LEFT" && w.boundingBox.x <= w.gameBoundary.leftBorderPos() {
 		return true
 	}
-	if w.currentDir == "RIGHT" && w.boundingBox.x+w.boundingBox.w >= w.gameBoundary.x+w.gameBoundary.w {
+	if w.currentDir == "RIGHT" && w.boundingBox.x+w.boundingBox.w >= w.gameBoundary.rightBorderPos() {
 		return true
 	}
 	return false
 }
 
 func (w *InvaderWave) getUI() []AbstractUiComponent {
-	return []AbstractUiComponent{
-		NewSpriteUIComponent("╭", Point{x: w.boundingBox.x, y: w.boundingBox.y}),                                     // top left
-		NewSpriteUIComponent("╮", Point{x: w.boundingBox.x + w.boundingBox.w, y: w.boundingBox.y}),                   // top right
-		NewSpriteUIComponent("╰", Point{x: w.boundingBox.x, y: w.boundingBox.y + w.boundingBox.h}),                   // bot left
-		NewSpriteUIComponent("╯", Point{x: w.boundingBox.x + w.boundingBox.w, y: w.boundingBox.y + w.boundingBox.h}), // bot right
-	}
+	return w.boundingBox.getDebugUI()
 }

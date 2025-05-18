@@ -1,7 +1,7 @@
 package main
 
 type AbstractGameState interface {
-	advance() AbstractGameState
+	advance()
 	isEnded() bool
 	begin()
 	getUI() []AbstractUiComponent

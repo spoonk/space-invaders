@@ -15,6 +15,8 @@ const FRAME_DURATION = 1000 / 60
 
 var kp = rune(NO_INPUT)
 
+var Run = true
+
 func main() {
 	// testKeyboard()
 	gameLoop()
@@ -34,12 +36,19 @@ func gameLoop() {
 
 	go handler.loop()
 
-	for {
-		state = state.advance()
+	defer cleanup(&r, handler)
+
+	for Run {
+		state.advance()
 		var ui = state.getUI()
 		r.draw(ui)
 		time.Sleep(time.Duration(FRAME_DURATION * NANOSECOND))
 	}
+}
+
+func cleanup(r *Renderer, k *KeyboardInputHandler) {
+	r.cleanup()
+	k.cleanup()
 }
 
 func testKeyboard() {

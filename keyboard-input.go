@@ -25,7 +25,7 @@ func (k *KeyboardInputHandler) init() {
 	}
 
 	k.oldTerminalState = oldState
-	k.registerCallback('q', func(_ rune) { k.cleanup() })
+	k.registerCallback('q', func(_ rune) { k.cleanup(); Run = false })
 }
 
 func NewKeyboardInput() *KeyboardInputHandler {

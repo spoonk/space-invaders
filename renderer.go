@@ -34,6 +34,10 @@ func hideCursor() {
 	fmt.Printf(HIDE_CURSOR)
 }
 
+func (r *Renderer) cleanup() {
+	fmt.Printf(SHOW_CURSOR)
+}
+
 func drawAtPosition(sprite string, p Point) {
 	moveCursorTo(p)
 	fmt.Print(sprite)
