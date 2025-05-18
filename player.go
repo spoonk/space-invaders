@@ -18,7 +18,7 @@ func (p *Player) getUI() []AbstractUiComponent {
 }
 
 func NewPlayer() *Player {
-	return &Player{pos: Point{50, 100}, controller: GetController()}
+	return &Player{pos: Point{50, 31}, controller: GetController()}
 }
 
 func (p *Player) move() {

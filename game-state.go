@@ -40,8 +40,8 @@ func (g *gameState) getUI() []AbstractUiComponent {
 	return allUI
 }
 
-func NewGameState() AbstractGameState {
-	gameBoundary := Box{x: 0, y: 0, h: 100, w: 125}
+func NewGameState() *gameState {
+	gameBoundary := Box{x: 0, y: 0, h: 30, w: 125}
 	return &gameState{
 		wave:         NewInvaderWave(&gameBoundary),
 		gameBoundary: &gameBoundary,

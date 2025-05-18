@@ -33,6 +33,7 @@ func gameLoop() {
 	controller.init(handler)
 
 	state := NewGameState()
+	debugPane := NewDebugPane(state)
 
 	go handler.loop()
 
@@ -41,6 +42,7 @@ func gameLoop() {
 	for Run {
 		state.advance()
 		var ui = state.getUI()
+		ui = append(ui, debugPane.getUI()...)
 		r.draw(ui)
 		time.Sleep(time.Duration(FRAME_DURATION * NANOSECOND))
 	}
