@@ -11,7 +11,7 @@ const NANOSECOND = 1000000
 var controller *KeyboardInputController
 
 // const FRAME_DURATION = 1000 / 60
-const FRAME_DURATION = 1000 / 10
+const FRAME_DURATION = 1000 / 60
 
 var kp = rune(NO_INPUT)
 
@@ -65,7 +65,6 @@ func testKeyboard() {
 
 func GetController() *KeyboardInputController {
 	if controller == nil {
-		// exit()
 		fmt.Println("controller not instantiated")
 	}
 	return controller
