@@ -21,13 +21,13 @@ const WAVE_WIDTH = 11
 // lead to you moving > 1 position in a single update
 
 // each wave has the exact same config of invaders
-func NewInvaderWave(gameBoundary *Box) *InvaderWave {
-
-	// this process is backwards, the bounding box should be inferred from the set of invaders
-	waveBoundingBox := Box{
-		x: INVADER_W_H, y: INVADER_W_H, h: WAVE_HEIGHT * INVADER_W_H, w: WAVE_WIDTH * INVADER_W_H,
+func NewInvaderWave(gameBoundary *Box, startPoint *Point) *InvaderWave {
+	if startPoint == nil {
+		startPoint = &Point{x: 0, y: 0}
 	}
-	invaders := getInvaders(&waveBoundingBox)
+	invaders := getInvaders(startPoint)
+
+	waveBoundingBox := inferBoundingBox(gameBoundary, invaders)
 
 	return &InvaderWave{
 		boundingBox:  waveBoundingBox,
@@ -37,17 +37,40 @@ func NewInvaderWave(gameBoundary *Box) *InvaderWave {
 	}
 }
 
-func getInvaders(waveBox *Box) [][]*Invader {
+func getInvaders(topLeft *Point) [][]*Invader {
 	invaders := [][]*Invader{}
 	for i := range WAVE_HEIGHT {
 		invaderRow := []*Invader{}
 		for j := range WAVE_WIDTH {
-			invaderPos := waveBox.getTopLeft().add(Point{x: j * INVADER_W_H, y: i * INVADER_W_H})
+			invaderPos := topLeft.add(Point{x: j * INVADER_W_H, y: i * INVADER_W_H})
 			invaderRow = append(invaderRow, NewInvader(invaderPos.x, invaderPos.y))
 		}
 		invaders = append(invaders, invaderRow)
 	}
 	return invaders
+}
+
+func inferBoundingBox(gameBoundary *Box, invaders [][]*Invader) Box {
+	// asertion: at least one invader alive
+	minX := gameBoundary.x + gameBoundary.w
+	minY := gameBoundary.y + gameBoundary.h
+	maxX := 0
+	maxY := 0
+
+	for _, invaderRow := range invaders {
+		for _, invader := range invaderRow {
+			if invader.isDead {
+				continue
+			}
+
+			minX = min(minX, invader.topLeft().x)
+			maxX = max(maxX, invader.topLeft().x+INVADER_W_H)
+			minY = min(minY, invader.topLeft().y)
+			maxY = max(maxY, invader.topLeft().y+INVADER_W_H)
+		}
+	}
+
+	return Box{x: minX, y: minY, w: maxX - minX, h: maxY - minY}
 }
 
 func (w *InvaderWave) BoundingBox() Box {

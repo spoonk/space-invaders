@@ -43,7 +43,7 @@ func (g *gameState) getUI() []AbstractUiComponent {
 func NewGameState() *gameState {
 	gameBoundary := Box{x: 0, y: 0, h: 30, w: 125}
 	return &gameState{
-		wave:         NewInvaderWave(&gameBoundary),
+		wave:         NewInvaderWave(&gameBoundary, &Point{x: 0, y: 0}),
 		gameBoundary: &gameBoundary,
 		player:       NewPlayer(),
 	}
