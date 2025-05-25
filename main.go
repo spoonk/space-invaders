@@ -6,14 +6,7 @@ import (
 	"time"
 )
 
-const NANOSECOND = 1000000
-
 var controller *KeyboardInputController
-
-// const FRAME_DURATION = 1000 / 60
-const FRAME_DURATION = 1000 / 60
-
-var kp = rune(NO_INPUT)
 
 var Run = true
 

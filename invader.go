@@ -46,5 +46,4 @@ func (i *Invader) topLeft() Point {
 
 func (i *Invader) registerHit() {
 	i.isDead = true
-	// todo increment score
 }

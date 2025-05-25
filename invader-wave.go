@@ -11,12 +11,7 @@ type InvaderWave struct {
 }
 
 // TODO: different types of invaders
-
-const (
-	Y_SPEED     = 1
-	WAVE_HEIGHT = 5
-	WAVE_WIDTH  = 11
-)
+// TODO: resize bounding box when invader dies
 
 // wave needs to define a delta T for how much it should move..
 // should be hitching independent: project forward by dt, which can
@@ -41,9 +36,9 @@ func NewInvaderWave(gameBoundary *Box, startPoint *Point) *InvaderWave {
 
 func getInvaders(topLeft *Point) [][]*Invader {
 	invaders := [][]*Invader{}
-	for i := range WAVE_HEIGHT {
+	for i := range INVADER_WAVE_HEIGHT {
 		invaderRow := []*Invader{}
-		for j := range WAVE_WIDTH {
+		for j := range INVADER_WAVE_WIDTH {
 			invaderPos := topLeft.add(Point{x: j * (INVADER_W + 2), y: i * (INVADER_H + 1)})
 			invaderRow = append(invaderRow, NewInvader(invaderPos.x, invaderPos.y))
 		}
@@ -136,9 +131,7 @@ func (w *InvaderWave) isAtLateralBoundary() bool {
 
 func (w *InvaderWave) getUI() []AbstractUiComponent {
 	components := []AbstractUiComponent{}
-	if DEBUG_BOUNDARY {
-		components = append(components, w.boundingBox.getDebugUI()...)
-	}
+	components = append(components, w.boundingBox.getDebugUI()...)
 
 	for _, invaderRow := range w.invaders {
 		for _, invader := range invaderRow {

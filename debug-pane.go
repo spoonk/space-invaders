@@ -11,10 +11,11 @@ type DebugPane struct {
 
 func NewDebugPane(g *gameState) *DebugPane {
 	// store sources you want metrics from
-	return &DebugPane{state: g}
-}
+	return &DebugPane{
+		uiPosition: Point{x: DEBUG_PANE_X, y: DEBUG_PANE_Y},
 
-func (db *DebugPane) update() {
+		state: g,
+	}
 }
 
 func (db *DebugPane) getUI() []AbstractUiComponent {
