@@ -12,9 +12,11 @@ type InvaderWave struct {
 
 // TODO: different types of invaders
 
-const Y_SPEED = 1
-const WAVE_HEIGHT = 5
-const WAVE_WIDTH = 11
+const (
+	Y_SPEED     = 1
+	WAVE_HEIGHT = 5
+	WAVE_WIDTH  = 11
+)
 
 // wave needs to define a delta T for how much it should move..
 // should be hitching independent: project forward by dt, which can

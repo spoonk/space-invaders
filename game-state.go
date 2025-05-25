@@ -4,8 +4,10 @@ import (
 	"fmt"
 )
 
-const X_SPEED = 1
-const DEBUG_BOUNDARY = false
+const (
+	X_SPEED        = 1
+	DEBUG_BOUNDARY = false
+)
 
 // game state is responsible for managing entities in the game
 // the involves removing things, creating things, ending the game, restarting it
@@ -16,6 +18,7 @@ type gameState struct {
 	player       *Player
 	controller   *KeyboardInputController
 	activeLaser  *Laser
+	scoreTracker *ScoreTracker
 }
 
 func (g *gameState) advance() {
@@ -39,7 +42,6 @@ func (g *gameState) advance() {
 	if controller.getCurrentKeypress() == ' ' {
 		g.handleShoot()
 	}
-
 }
 
 func (g *gameState) checkLaserIntersection() {
@@ -108,5 +110,6 @@ func NewGameState() *gameState {
 		gameBoundary: &gameBoundary,
 		player:       NewPlayer(),
 		controller:   GetController(),
+		scoreTracker: NewScoreTracker(),
 	}
 }

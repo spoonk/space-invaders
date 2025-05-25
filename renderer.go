@@ -2,10 +2,12 @@ package main
 
 import "fmt"
 
-const CLEAR_ANSI = "\033[2J"
-const HOME_ANSI = "\033[H"
-const SHOW_CURSOR = "\x1b[?25h"
-const HIDE_CURSOR = "\x1b[?25l"
+const (
+	CLEAR_ANSI  = "\033[2J"
+	HOME_ANSI   = "\033[H"
+	SHOW_CURSOR = "\x1b[?25h"
+	HIDE_CURSOR = "\x1b[?25l"
+)
 
 type Renderer struct{}
 
@@ -26,22 +28,21 @@ func (r Renderer) init() {
 // stuff to clear screen
 
 func clearScreen() {
-	fmt.Printf(CLEAR_ANSI)
-	fmt.Printf(HOME_ANSI)
+	fmt.Print(CLEAR_ANSI)
+	fmt.Print(HOME_ANSI)
 }
 
 func hideCursor() {
-	fmt.Printf(HIDE_CURSOR)
+	fmt.Print(HIDE_CURSOR)
 }
 
 func (r *Renderer) cleanup() {
-	fmt.Printf(SHOW_CURSOR)
+	fmt.Print(SHOW_CURSOR)
 }
 
 func drawAtPosition(sprite string, p Point) {
 	moveCursorTo(p)
 	fmt.Print(sprite)
-
 }
 
 func moveCursorTo(p Point) {

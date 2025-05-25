@@ -11,8 +11,10 @@ import (
 //	if we just started pressing a new key, repeat that key for 200ms?
 //	cuz the keyboard needs time to warm up...
 
-const TIMER_DURATION_MS = 100 * NANOSECOND
-const NO_INPUT = -1
+const (
+	TIMER_DURATION_MS = 100 * NANOSECOND
+	NO_INPUT          = -1
+)
 
 type KeyboardInputController struct {
 	lastPressedKey   rune

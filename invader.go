@@ -7,15 +7,18 @@ type Invader struct {
 	isDead      bool
 }
 
-const INVADER_H = 1
-const INVADER_W = 3
+const (
+	INVADER_H = 1
+	INVADER_W = 3
+)
 
 func NewInvader(xPos int, yPos int) *Invader {
 	return &Invader{
 		pos:         Point{x: int(xPos), y: int(yPos)},
 		value:       1,
 		isDead:      false,
-		boundingBox: Box{x: xPos, y: yPos, w: INVADER_W, h: INVADER_H}}
+		boundingBox: Box{x: xPos, y: yPos, w: INVADER_W, h: INVADER_H},
+	}
 }
 
 // move invader by specified distance
@@ -31,7 +34,10 @@ func (i *Invader) getUI() []AbstractUiComponent {
 		return []AbstractUiComponent{}
 	}
 
-	return []AbstractUiComponent{NewSpriteUIComponent("▛▀▜", i.topLeft())}
+	return append(
+		[]AbstractUiComponent{NewSpriteUIComponent("▛▀▜", i.topLeft())},
+		i.boundingBox.getDebugUI()...,
+	)
 }
 
 func (i *Invader) topLeft() Point {

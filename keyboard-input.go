@@ -4,8 +4,9 @@ package main
 import (
 	"errors"
 	"fmt"
-	"golang.org/x/term"
 	"os"
+
+	"golang.org/x/term"
 )
 
 // detect keypress, fire event when one is pressed
@@ -45,7 +46,6 @@ func (k *KeyboardInputHandler) readInput() (byte, error) {
 	var buffer []byte = make([]byte, 1)
 
 	_, err := os.Stdin.Read(buffer)
-
 	if err != nil {
 		return 0, errors.New("Bad input")
 	}

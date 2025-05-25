@@ -4,9 +4,6 @@ type Box struct {
 	x, y, h, w int
 }
 
-//	func NewBox(x int, y int, w int, h int) Box {
-//		return Box{x: x, y: y, w: w, h: h}
-//	}
 func (b *Box) leftBorderPos() int {
 	return b.x
 }
@@ -25,6 +22,10 @@ func (b *Box) isPointWithin(p *Point) bool {
 
 func (b *Box) getDebugUI() []AbstractUiComponent {
 	components := []AbstractUiComponent{}
+
+	if !DEBUG_BOUNDARY {
+		return components
+	}
 
 	// add in border characters
 	for i := 1; i < b.w; i++ {

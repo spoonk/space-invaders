@@ -15,7 +15,6 @@ func NewDebugPane(g *gameState) *DebugPane {
 }
 
 func (db *DebugPane) update() {
-
 }
 
 func (db *DebugPane) getUI() []AbstractUiComponent {
