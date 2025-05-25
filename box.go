@@ -4,6 +4,9 @@ type Box struct {
 	x, y, h, w int
 }
 
+//	func NewBox(x int, y int, w int, h int) Box {
+//		return Box{x: x, y: y, w: w, h: h}
+//	}
 func (b *Box) leftBorderPos() int {
 	return b.x
 }
@@ -14,6 +17,10 @@ func (b *Box) rightBorderPos() int {
 
 func (b *Box) getTopLeft() *Point {
 	return &Point{x: b.x, y: b.y}
+}
+
+func (b *Box) isPointWithin(p *Point) bool {
+	return (p.x >= b.x && p.x <= b.x+b.w && p.y >= b.y && p.y <= b.y+b.h)
 }
 
 func (b *Box) getDebugUI() []AbstractUiComponent {

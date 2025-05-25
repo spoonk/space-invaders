@@ -42,7 +42,7 @@ func getInvaders(topLeft *Point) [][]*Invader {
 	for i := range WAVE_HEIGHT {
 		invaderRow := []*Invader{}
 		for j := range WAVE_WIDTH {
-			invaderPos := topLeft.add(Point{x: j * INVADER_W, y: i * INVADER_H})
+			invaderPos := topLeft.add(Point{x: j * (INVADER_W + 2), y: i * (INVADER_H + 1)})
 			invaderRow = append(invaderRow, NewInvader(invaderPos.x, invaderPos.y))
 		}
 		invaders = append(invaders, invaderRow)
