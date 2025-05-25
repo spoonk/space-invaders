@@ -21,7 +21,6 @@ func (g *gameState) advance() {
 	g.player.move() // g.player.update()
 
 	// todo: check if laser will hit invader
-
 	if g.activeLaser != nil {
 		g.activeLaser.update()
 
@@ -60,6 +59,13 @@ func (g *gameState) checkLaserIntersection() {
 				inv.registerHit()
 				g.scoreTracker.addScore(int(inv.value))
 				g.activeLaser = nil
+
+				if g.wave.areAllInvadersDead() {
+					g.wave = NewInvaderWave(g.gameBoundary, &Point{x: 0, y: 0})
+				} else {
+					g.wave.onInvaderHit()
+				}
+
 				return
 			}
 		}

@@ -8,6 +8,7 @@ type InvaderWave struct {
 	gameBoundary *Box
 	invaders     [][]*Invader
 	currentDir   string
+	allDead      bool
 }
 
 // TODO: different types of invaders
@@ -70,16 +71,13 @@ func inferBoundingBox(gameBoundary *Box, invaders [][]*Invader) Box {
 	return Box{x: minX, y: minY, w: maxX - minX, h: maxY - minY}
 }
 
-func (w *InvaderWave) BoundingBox() Box {
-	return w.boundingBox
-}
-
 func (w *InvaderWave) update() {
 	w.moveWave()
 	// TODO: handle projecting forward later, for now naively move it
 }
 
 func (w *InvaderWave) moveWave() {
+	// todo: if I want to cache the areAllInvadersDead computation, would set dirty bit here
 	yUpdate := 0
 	xUpdate := 0
 
@@ -101,6 +99,27 @@ func (w *InvaderWave) moveInvaders(x int, y int) {
 			invader.moveBy(x, y)
 		}
 	}
+}
+
+func (w *InvaderWave) onInvaderHit() {
+	// determine if all dead
+	// if w.areAllInvadersDead() {
+	// 	return
+	// }
+
+	// update boundingbox
+	w.boundingBox = inferBoundingBox(w.gameBoundary, w.invaders)
+}
+
+func (w *InvaderWave) areAllInvadersDead() bool {
+	for _, row := range w.invaders {
+		for _, inv := range row {
+			if !inv.isDead {
+				return false
+			}
+		}
+	}
+	return true
 }
 
 func getDirScalar(dir string) int {
@@ -127,6 +146,10 @@ func (w *InvaderWave) isAtLateralBoundary() bool {
 		return true
 	}
 	return false
+}
+
+func (w *InvaderWave) BoundingBox() Box {
+	return w.boundingBox
 }
 
 func (w *InvaderWave) getUI() []AbstractUiComponent {
