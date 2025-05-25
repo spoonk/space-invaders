@@ -25,18 +25,18 @@ func gameLoop() {
 	controller = NewKeyBoardInputController()
 	controller.init(handler)
 
-	state := NewGameState()
-	debugPane := NewDebugPane(state)
+	program := NewProgramStateMaanger()
+	program.init()
 
 	go handler.loop()
 
 	defer cleanup(&r, handler)
 
 	for Run {
-		state.advance()
-		ui := state.getUI()
-		ui = append(ui, debugPane.getUI()...)
+		program.update()
+		ui := program.getUI()
 		r.draw(ui)
+
 		time.Sleep(time.Duration(FRAME_DURATION * NANOSECOND))
 	}
 }

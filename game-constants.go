@@ -19,7 +19,7 @@ const (
 
 const (
 	NANOSECOND     = 1000000
-	FRAME_DURATION = 1000 / 60
+	FRAME_DURATION = 1000 / 600
 )
 
 const (
@@ -30,4 +30,10 @@ const (
 const (
 	SCORE_X = 0
 	SCORE_Y = 0
+)
+
+const (
+	GAME_STATE_ID      = "game"
+	MENU_STATE_ID      = "menu"
+	GAME_OVER_STATE_ID = "game_over"
 )

@@ -16,12 +16,12 @@ type gameState struct {
 	scoreTracker *ScoreTracker
 }
 
-func (g *gameState) advance() {
+func (g *gameState) advance() State {
 	g.wave.update()
 
 	if g.wave.isAtBottom() {
 		// TODO: transition to game over screen
-		Run = false
+		return EndState()
 	}
 	g.player.move() // g.player.update()
 
@@ -38,6 +38,8 @@ func (g *gameState) advance() {
 	if controller.getCurrentKeypress() == ' ' {
 		g.handleShoot()
 	}
+
+	return ContinueState()
 }
 
 func (g *gameState) checkLaserIntersection() {
