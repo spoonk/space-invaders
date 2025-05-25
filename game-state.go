@@ -18,9 +18,13 @@ type gameState struct {
 
 func (g *gameState) advance() {
 	g.wave.update()
+
+	if g.wave.isAtBottom() {
+		// TODO: transition to game over screen
+		Run = false
+	}
 	g.player.move() // g.player.update()
 
-	// todo: check if laser will hit invader
 	if g.activeLaser != nil {
 		g.activeLaser.update()
 
@@ -28,11 +32,9 @@ func (g *gameState) advance() {
 			g.activeLaser = nil
 		}
 
-		// check if laser now on top of invader
 		g.checkLaserIntersection()
 	}
 
-	// if space pressed and no laser, spawn new laser
 	if controller.getCurrentKeypress() == ' ' {
 		g.handleShoot()
 	}

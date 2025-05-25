@@ -138,6 +138,7 @@ func getOppositeDirection(dir string) string {
 	return "LEFT"
 }
 
+// TODO: these should be box functions
 func (w *InvaderWave) isAtLateralBoundary() bool {
 	if w.currentDir == "LEFT" && w.boundingBox.x <= w.gameBoundary.leftBorderPos() {
 		return true
@@ -146,6 +147,10 @@ func (w *InvaderWave) isAtLateralBoundary() bool {
 		return true
 	}
 	return false
+}
+
+func (w *InvaderWave) isAtBottom() bool {
+	return w.boundingBox.y+w.boundingBox.h >= w.gameBoundary.y+w.gameBoundary.h
 }
 
 func (w *InvaderWave) BoundingBox() Box {
