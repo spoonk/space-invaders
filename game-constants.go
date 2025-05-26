@@ -12,14 +12,14 @@ var GAME_BOUNDARY = struct {
 
 const (
 	INVADER_WAVE_HEIGHT = 5
-	INVADER_WAVE_WIDTH  = 11
+	INVADER_WAVE_WIDTH  = 3
 	X_SPEED             = 1
 	Y_SPEED             = 1
 )
 
 const (
 	NANOSECOND     = 1000000
-	FRAME_DURATION = 1000 / 600
+	FRAME_DURATION = 1000 / 60
 )
 
 const (
@@ -37,3 +37,7 @@ const (
 	MENU_STATE_ID      = "menu"
 	GAME_OVER_STATE_ID = "game_over"
 )
+
+const INVADER_FIRE_PROB = float32(1) / 3
+
+const PLAYER_W = 3

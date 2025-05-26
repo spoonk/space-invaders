@@ -3,6 +3,7 @@ package main
 type Player struct {
 	pos        Point
 	controller *KeyboardInputController
+	lives      int
 }
 
 func (p *Player) moveTo(newPos Point) {
@@ -18,7 +19,15 @@ func (p *Player) getUI() []AbstractUiComponent {
 }
 
 func NewPlayer() *Player {
-	return &Player{pos: Point{50, 31}, controller: GetController()}
+	return &Player{pos: Point{50, 31}, controller: GetController(), lives: 3}
+}
+
+func (p *Player) registerHit() {
+	p.lives--
+}
+
+func (p *Player) boundingBox() *Box {
+	return &Box{x: p.pos.x, y: p.pos.y, h: 1, w: PLAYER_W}
 }
 
 func (p *Player) move() {

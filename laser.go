@@ -1,20 +1,18 @@
 package main
 
 type Laser struct {
-	position    Point
-	boundingBox Box
+	position Point
+	dir      int // +/- 1
 }
 
 func (l *Laser) update() {
-	l.position = l.position.add(Point{x: 0, y: -1})
+	l.position = l.position.add(Point{x: 0, y: l.dir})
 }
 
-func NewLaser(at *Point) *Laser {
+func NewLaser(at *Point, dir int) *Laser {
 	return &Laser{
 		position: *at,
-		boundingBox: Box{
-			x: at.x, y: at.y, h: 1, w: 1,
-		},
+		dir:      dir,
 	}
 }
 

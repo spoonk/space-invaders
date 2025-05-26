@@ -43,7 +43,7 @@ func (k *KeyboardInputHandler) cleanup() {
 
 func (k *KeyboardInputHandler) readInput() (byte, error) {
 	// note: arrow keys will actually return 3 bytes, will need to handle those
-	var buffer []byte = make([]byte, 1)
+	buffer := make([]byte, 1)
 
 	_, err := os.Stdin.Read(buffer)
 	if err != nil {
@@ -73,7 +73,7 @@ func byteToCharacter(b byte) (rune, error) {
 		return '1', nil
 	}
 
-	return '0', fmt.Errorf("No registered mapping for byte %b", b)
+	return '0', fmt.Errorf("no registered mapping for byte %b", b)
 }
 
 func (k *KeyboardInputHandler) fireEventsForChar(char rune) {
