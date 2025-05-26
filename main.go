@@ -35,6 +35,7 @@ func gameLoop() {
 	for Run {
 		program.update()
 		ui := program.getUI()
+
 		r.draw(ui)
 
 		time.Sleep(time.Duration(FRAME_DURATION * NANOSECOND))

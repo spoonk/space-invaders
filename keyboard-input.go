@@ -47,7 +47,7 @@ func (k *KeyboardInputHandler) readInput() (byte, error) {
 
 	_, err := os.Stdin.Read(buffer)
 	if err != nil {
-		return 0, errors.New("Bad input")
+		return 0, errors.New("bad input")
 	}
 
 	return buffer[0], nil
@@ -67,6 +67,10 @@ func byteToCharacter(b byte) (rune, error) {
 		return ' ', nil
 	case 113:
 		return 'q', nil
+	case 114:
+		return 'r', nil
+	case 49:
+		return '1', nil
 	}
 
 	return '0', fmt.Errorf("No registered mapping for byte %b", b)

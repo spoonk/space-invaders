@@ -1,30 +1,60 @@
 package main
 
 type ProgramStateManager struct {
+	menu *MenuState
 	game *gameState
+	end  *GameOverState
 }
 
 func (p *ProgramStateManager) init() {
-	p.game = NewGameState()
+	p.menu = NewMenuState()
 }
 
 func (p *ProgramStateManager) update() {
-	if p.game == nil {
+	// right now I have to special case everything....
+	if p.menu != nil {
+		res := p.menu.advance()
+		if res == EndState() {
+			p.game = NewGameState()
+			p.menu = nil
+		}
 		return
 	}
 
-	res := p.game.advance()
-	if res == EndState() {
-		p.game = nil
-		// Run = false
+	if p.game != nil {
+		res := p.game.advance()
+		if res == EndState() {
+			p.end = &GameOverState{score: p.game.scoreTracker.score}
+			p.game = nil
+		}
+		return
+	}
+
+	if p.end != nil {
+		res := p.end.advance()
+		if res == EndState() {
+			p.game = NewGameState()
+			p.end = nil
+		}
+		return
 	}
 }
 
 func (p *ProgramStateManager) getUI() []AbstractUiComponent {
-	if p.game == nil {
-		return []AbstractUiComponent{}
+	if p.menu != nil {
+		return p.menu.getUI()
 	}
-	return p.game.getUI()
+
+	if p.game != nil {
+		return p.game.getUI()
+	}
+
+	if p.end != nil {
+		return p.end.getUI()
+	}
+
+	return []AbstractUiComponent{}
+	// return p.game.getUI()
 }
 
 func NewProgramStateMaanger() *ProgramStateManager {

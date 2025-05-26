@@ -1,8 +1,6 @@
 package main
 
 import (
-	// "errors"
-	// "fmt"
 	"time"
 )
 
@@ -23,7 +21,7 @@ type KeyboardInputController struct {
 }
 
 func (k *KeyboardInputController) init(handler *KeyboardInputHandler) {
-	for _, key := range []rune{'w', 'a', 's', 'd', 'q', ' ', '1', '2', '3'} {
+	for _, key := range []rune{'w', 'a', 's', 'd', 'q', ' ', '1', 'r'} {
 		handler.registerCallback(key, k.onKeypressReceive)
 	}
 }
