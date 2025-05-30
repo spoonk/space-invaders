@@ -23,7 +23,6 @@ func (g *gameState) advance() State {
 	g.wave.update()
 
 	if g.wave.isAtBottom() {
-		// TODO: transition to game over screen
 		return EndState()
 	}
 	g.updateLaser()
@@ -49,7 +48,6 @@ func (g *gameState) updateLaser() {
 
 		g.checkLaserIntersection()
 
-		g.checkInvaderLaserIntersection()
 	}
 
 	if controller.getCurrentKeypress() == ' ' {
@@ -72,6 +70,7 @@ func (g *gameState) updateInvaderLasers() {
 			nextLaserInd = ind
 		} else {
 			las.update()
+			g.checkInvaderLaserIntersection()
 			if las.position.y > g.gameBoundary.y+g.gameBoundary.h {
 				g.invaderLasers[ind] = nil
 			}
@@ -199,7 +198,7 @@ func NewGameState() *gameState {
 		controller:   GetController(),
 		scoreTracker: NewScoreTracker(),
 		// invaderLasers: []*Laser{nil, nil, nil, nil, nil, nil, nil},
-		invaderLasers: make([]*Laser, 100),
+		invaderLasers: make([]*Laser, NUM_INVADER_LASER),
 		debugPane:     NewDebugPane(),
 	}
 }

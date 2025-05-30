@@ -19,7 +19,7 @@ func (p *Player) getUI() []AbstractUiComponent {
 }
 
 func NewPlayer() *Player {
-	return &Player{pos: Point{50, 31}, controller: GetController(), lives: 3}
+	return &Player{pos: Point{GAME_BOUNDARY.w / 2, PLAYER_Y}, controller: GetController(), lives: 3}
 }
 
 func (p *Player) registerHit() {

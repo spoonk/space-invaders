@@ -75,9 +75,6 @@ func (w *InvaderWave) update() {
 	// TODO: handle projecting forward later, for now naively move it
 }
 
-func (w *InvaderWave) numAlive() {
-}
-
 func (w *InvaderWave) moveWave() {
 	// todo: if I want to cache the areAllInvadersDead computation, would set dirty bit here
 	yUpdate := 0

@@ -10,11 +10,14 @@ var GAME_BOUNDARY = struct {
 	x: 0, y: 0, h: 30, w: 125,
 }
 
+const PLAYER_Y = 30
+
 const (
 	INVADER_WAVE_HEIGHT = 5
-	INVADER_WAVE_WIDTH  = 3
+	INVADER_WAVE_WIDTH  = 11
 	X_SPEED             = 1
 	Y_SPEED             = 1
+	NUM_INVADER_LASER   = 3
 )
 
 const (
@@ -38,6 +41,6 @@ const (
 	GAME_OVER_STATE_ID = "game_over"
 )
 
-const INVADER_FIRE_PROB = float32(1) / 3
+const INVADER_FIRE_PROB = float32(1) / 3000
 
 const PLAYER_W = 3
