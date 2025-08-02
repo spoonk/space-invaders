@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"space-invaders/constants"
 )
 
 // game state is responsible for managing entities in the game
@@ -86,7 +87,7 @@ func (g *gameState) updateInvaderLasers() {
 	for _, row := range g.wave.invaders {
 		for _, inv := range row {
 			if !inv.isDead {
-				if rand.Float32() < INVADER_FIRE_PROB {
+				if rand.Float32() < constants.INVADER_FIRE_PROB {
 					// new laser at position
 					laserPos := inv.boundingBox.getTopLeft().shifted(1, 1)
 					g.invaderLasers[nextLaserInd] = NewLaser(&laserPos, 1)
@@ -188,7 +189,7 @@ func (g *gameState) getUI() []AbstractUiComponent {
 
 func NewGameState() *gameState {
 	gameBoundary := Box{
-		x: GAME_BOUNDARY.x, y: GAME_BOUNDARY.y, h: GAME_BOUNDARY.h, w: GAME_BOUNDARY.w,
+		x: constants.GAME_BOUNDARY.X, y: constants.GAME_BOUNDARY.Y, h: constants.GAME_BOUNDARY.H, w: constants.GAME_BOUNDARY.W,
 	}
 
 	return &gameState{
@@ -198,7 +199,7 @@ func NewGameState() *gameState {
 		controller:   GetController(),
 		scoreTracker: NewScoreTracker(),
 		// invaderLasers: []*Laser{nil, nil, nil, nil, nil, nil, nil},
-		invaderLasers: make([]*Laser, NUM_INVADER_LASER),
+		invaderLasers: make([]*Laser, constants.NUM_INVADER_LASER),
 		debugPane:     NewDebugPane(),
 	}
 }

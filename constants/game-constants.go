@@ -1,13 +1,13 @@
-package main
+package constants
 
 // file containing high-level configuration constants
 
 const DEBUG_BOUNDARY = false
 
 var GAME_BOUNDARY = struct {
-	x, y, h, w int
+	X, Y, H, W int
 }{
-	x: 0, y: 0, h: 30, w: 125,
+	X: 0, Y: 0, H: 30, W: 125,
 }
 
 const PLAYER_Y = 30

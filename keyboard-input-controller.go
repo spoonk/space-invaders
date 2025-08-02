@@ -1,6 +1,7 @@
 package main
 
 import (
+	"space-invaders/constants"
 	"time"
 )
 
@@ -10,7 +11,7 @@ import (
 //	cuz the keyboard needs time to warm up...
 
 const (
-	TIMER_DURATION_MS = 100 * NANOSECOND
+	TIMER_DURATION_MS = 100 * constants.NANOSECOND
 	NO_INPUT          = -1
 )
 

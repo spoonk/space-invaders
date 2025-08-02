@@ -1,6 +1,9 @@
 package main
 
-import "strconv"
+import (
+	"space-invaders/constants"
+	"strconv"
+)
 
 type ScoreTracker struct {
 	score int
@@ -17,7 +20,7 @@ func (s *ScoreTracker) addScore(toAdd int) {
 func (s *ScoreTracker) getUI() []AbstractUiComponent {
 	return []AbstractUiComponent{
 		NewSpriteUIComponent(
-			strconv.Itoa(s.score), Point{x: SCORE_X, y: SCORE_Y},
+			strconv.Itoa(s.score), Point{x: constants.SCORE_X, y: constants.SCORE_Y},
 		),
 	}
 }

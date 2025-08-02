@@ -1,5 +1,7 @@
 package main
 
+import "space-invaders/constants"
+
 type Player struct {
 	pos        Point
 	controller *KeyboardInputController
@@ -19,7 +21,7 @@ func (p *Player) getUI() []AbstractUiComponent {
 }
 
 func NewPlayer() *Player {
-	return &Player{pos: Point{GAME_BOUNDARY.w / 2, PLAYER_Y}, controller: GetController(), lives: 3}
+	return &Player{pos: Point{constants.GAME_BOUNDARY.W / 2, constants.PLAYER_Y}, controller: GetController(), lives: 3}
 }
 
 func (p *Player) registerHit() {
@@ -27,7 +29,7 @@ func (p *Player) registerHit() {
 }
 
 func (p *Player) boundingBox() *Box {
-	return &Box{x: p.pos.x, y: p.pos.y, h: 1, w: PLAYER_W}
+	return &Box{x: p.pos.x, y: p.pos.y, h: 1, w: constants.PLAYER_W}
 }
 
 func (p *Player) move() {

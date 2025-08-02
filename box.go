@@ -1,5 +1,7 @@
 package main
 
+import "space-invaders/constants"
+
 type Box struct {
 	x, y, h, w int
 }
@@ -23,7 +25,7 @@ func (b *Box) isPointWithin(p *Point) bool {
 func (b *Box) getDebugUI() []AbstractUiComponent {
 	components := []AbstractUiComponent{}
 
-	if !DEBUG_BOUNDARY {
+	if !constants.DEBUG_BOUNDARY {
 		return components
 	}
 

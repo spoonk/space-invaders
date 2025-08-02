@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"space-invaders/constants"
 )
 
 type DebugPane struct {
@@ -12,7 +13,7 @@ type DebugPane struct {
 func NewDebugPane() *DebugPane {
 	// store sources you want metrics from
 	return &DebugPane{
-		uiPosition: Point{x: DEBUG_PANE_X, y: DEBUG_PANE_Y},
+		uiPosition: Point{x: constants.DEBUG_PANE_X, y: constants.DEBUG_PANE_Y},
 	}
 }
 

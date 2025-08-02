@@ -1,5 +1,7 @@
 package main
 
+import "space-invaders/constants"
+
 // wave designed as a collection of invaders
 // wave is responsible for moving all invaders within
 
@@ -36,9 +38,9 @@ func NewInvaderWave(gameBoundary *Box, startPoint *Point) *InvaderWave {
 
 func getInvaders(topLeft *Point) [][]*Invader {
 	invaders := [][]*Invader{}
-	for i := range INVADER_WAVE_HEIGHT {
+	for i := range constants.INVADER_WAVE_HEIGHT {
 		invaderRow := []*Invader{}
-		for j := range INVADER_WAVE_WIDTH {
+		for j := range constants.INVADER_WAVE_WIDTH {
 			invaderPos := topLeft.add(Point{x: j * (INVADER_W + 2), y: i * (INVADER_H + 1)})
 			invaderRow = append(invaderRow, NewInvader(invaderPos.x, invaderPos.y))
 		}
@@ -84,7 +86,7 @@ func (w *InvaderWave) moveWave() {
 		w.currentDir = getOppositeDirection(w.currentDir)
 		yUpdate = 1
 	}
-	xUpdate += getDirScalar(w.currentDir) * X_SPEED
+	xUpdate += getDirScalar(w.currentDir) * constants.X_SPEED
 
 	w.boundingBox.x += xUpdate
 	w.boundingBox.y += yUpdate

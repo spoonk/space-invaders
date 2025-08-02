@@ -1,8 +1,8 @@
 package main
 
 import (
-	// "fmt"
 	"fmt"
+	"space-invaders/constants"
 	"time"
 )
 
@@ -38,7 +38,7 @@ func gameLoop() {
 
 		r.draw(ui)
 
-		time.Sleep(time.Duration(FRAME_DURATION * NANOSECOND))
+		time.Sleep(time.Duration(constants.FRAME_DURATION * constants.NANOSECOND))
 	}
 }
 
@@ -64,7 +64,7 @@ func testKeyboard() {
 		r.draw([]AbstractUiComponent{})
 		fmt.Printf("Last pressed: %c\n", controller.getLastKeypress())
 		fmt.Printf("Currently pressed pressed: %c\n", controller.getCurrentKeypress())
-		time.Sleep(FRAME_DURATION * NANOSECOND)
+		time.Sleep(constants.FRAME_DURATION * constants.NANOSECOND)
 	}
 }
 
