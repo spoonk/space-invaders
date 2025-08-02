@@ -1,15 +1,11 @@
-package main
+package keyboard
 
-// todo: eventually I'd like to replace this library with actual implementations to figure it out
 import (
 	"errors"
 	"fmt"
-	"os"
-
 	"golang.org/x/term"
+	"os"
 )
-
-// detect keypress, fire event when one is pressed
 
 type KeyboardInputHandler struct {
 	oldTerminalState *term.State
@@ -17,7 +13,7 @@ type KeyboardInputHandler struct {
 	callbacks        map[rune][]func(rune)
 }
 
-func (k *KeyboardInputHandler) init() {
+func (k *KeyboardInputHandler) Init() {
 	fd := int(k.inputFile.Fd())
 	oldState, err := term.MakeRaw(fd)
 	if err != nil {
@@ -26,18 +22,17 @@ func (k *KeyboardInputHandler) init() {
 	}
 
 	k.oldTerminalState = oldState
-	k.registerCallback('q', func(_ rune) { k.cleanup(); Run = false })
 }
 
 func NewKeyboardInput() *KeyboardInputHandler {
 	return &KeyboardInputHandler{inputFile: os.Stdin, callbacks: make(map[rune][]func(rune))}
 }
 
-func (k *KeyboardInputHandler) registerCallback(char rune, fun func(rune)) {
+func (k *KeyboardInputHandler) RegisterCallback(char rune, fun func(rune)) {
 	k.callbacks[char] = append(k.callbacks[char], fun)
 }
 
-func (k *KeyboardInputHandler) cleanup() {
+func (k *KeyboardInputHandler) Cleanup() {
 	term.Restore(int(k.inputFile.Fd()), k.oldTerminalState)
 }
 
@@ -83,7 +78,7 @@ func (k *KeyboardInputHandler) fireEventsForChar(char rune) {
 	}
 }
 
-func (k *KeyboardInputHandler) loop() {
+func (k *KeyboardInputHandler) Loop() {
 	for {
 		b, err := k.readInput()
 		if err != nil {

@@ -9,7 +9,7 @@ import (
 type GameOverState struct{ score int }
 
 func (e *GameOverState) advance() State {
-	if GetController().getCurrentKeypress() == 'r' {
+	if GetController().GetCurrentKeypress() == 'r' {
 		return EndState()
 	}
 	return ContinueState()

@@ -2,13 +2,14 @@ package main
 
 import (
 	"space-invaders/constants"
+	"space-invaders/keyboard"
 	"space-invaders/ui"
 	"space-invaders/utils"
 )
 
 type Player struct {
 	pos        utils.Point
-	controller *KeyboardInputController
+	controller *keyboard.KeyboardInputController
 	lives      int
 }
 
@@ -37,7 +38,7 @@ func (p *Player) boundingBox() *utils.Box {
 }
 
 func (p *Player) move() {
-	press := p.controller.getCurrentKeypress()
+	press := p.controller.GetCurrentKeypress()
 
 	currPos := p.pos
 	if press == 'a' {

@@ -8,7 +8,7 @@ import (
 type MenuState struct{}
 
 func (m *MenuState) advance() State {
-	if GetController().getCurrentKeypress() == '1' {
+	if GetController().GetCurrentKeypress() == '1' {
 		return EndState()
 	}
 

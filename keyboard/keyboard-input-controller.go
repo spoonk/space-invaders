@@ -1,14 +1,9 @@
-package main
+package keyboard
 
 import (
 	"space-invaders/constants"
 	"time"
 )
-
-// todo: maybe some rising edge timer??
-//
-//	if we just started pressing a new key, repeat that key for 200ms?
-//	cuz the keyboard needs time to warm up...
 
 const (
 	TIMER_DURATION_MS = 100 * constants.NANOSECOND
@@ -21,9 +16,9 @@ type KeyboardInputController struct {
 	pressExpireTimer *time.Timer
 }
 
-func (k *KeyboardInputController) init(handler *KeyboardInputHandler) {
+func (k *KeyboardInputController) Init(handler *KeyboardInputHandler) {
 	for _, key := range []rune{'w', 'a', 's', 'd', 'q', ' ', '1', 'r'} {
-		handler.registerCallback(key, k.onKeypressReceive)
+		handler.RegisterCallback(key, k.onKeypressReceive)
 	}
 }
 
@@ -43,11 +38,11 @@ func (k *KeyboardInputController) onKeypressReceive(char rune) {
 	k.lastPressedKey = char
 }
 
-func (k *KeyboardInputController) getLastKeypress() rune {
+func (k *KeyboardInputController) GetLastKeypress() rune {
 	return k.lastPressedKey
 }
 
-func (k *KeyboardInputController) getCurrentKeypress() rune {
+func (k *KeyboardInputController) GetCurrentKeypress() rune {
 	return k.currentKeyPress
 }
 

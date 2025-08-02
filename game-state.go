@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"space-invaders/constants"
 	"space-invaders/invaders"
+	"space-invaders/keyboard"
 	"space-invaders/ui"
 	"space-invaders/utils"
 )
@@ -16,7 +17,7 @@ type gameState struct {
 	wave          *invaders.InvaderWave
 	gameBoundary  *utils.Box
 	player        *Player
-	controller    *KeyboardInputController
+	controller    *keyboard.KeyboardInputController
 	activeLaser   *Laser
 	scoreTracker  *ScoreTracker
 	invaderLasers []*Laser
@@ -54,7 +55,7 @@ func (g *gameState) updateLaser() {
 
 	}
 
-	if controller.getCurrentKeypress() == ' ' {
+	if controller.GetCurrentKeypress() == ' ' {
 		g.handleShoot()
 	}
 }
