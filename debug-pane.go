@@ -20,7 +20,7 @@ func NewDebugPane() *DebugPane {
 }
 
 func (db *DebugPane) getUI(state *gameState) []ui.AbstractUiComponent {
-	invaderWavePos := utils.Point{X: state.wave.boundingBox.X, Y: state.wave.boundingBox.Y}
+	invaderWavePos := utils.Point{X: state.wave.BoundingBox().X, Y: state.wave.BoundingBox().Y}
 	playerPos := state.player.topLeft()
 	playerLives := state.player.lives
 

@@ -18,6 +18,6 @@ func (b *Box) GetTopLeft() *Point {
 	return &Point{X: b.X, Y: b.Y}
 }
 
-func (b *Box) IsPointWithin(p *Point) bool {
+func (b Box) IsPointWithin(p *Point) bool {
 	return (p.X >= b.X && p.X <= b.X+b.W && p.Y >= b.Y && p.Y <= b.Y+b.H)
 }

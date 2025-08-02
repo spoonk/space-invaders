@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"space-invaders/constants"
+	"space-invaders/invaders"
 	"space-invaders/ui"
 	"space-invaders/utils"
 )
@@ -12,7 +13,7 @@ import (
 // the involves removing things, creating things, ending the game, restarting it
 
 type gameState struct {
-	wave          *InvaderWave
+	wave          *invaders.InvaderWave
 	gameBoundary  *utils.Box
 	player        *Player
 	controller    *KeyboardInputController
@@ -23,9 +24,9 @@ type gameState struct {
 }
 
 func (g *gameState) advance() State {
-	g.wave.update()
+	g.wave.Update()
 
-	if g.wave.isAtBottom() {
+	if g.wave.IsAtBottom() {
 		return EndState()
 	}
 	g.updateLaser()
@@ -86,12 +87,12 @@ func (g *gameState) updateInvaderLasers() {
 		return
 	}
 
-	for _, row := range g.wave.invaders {
+	for _, row := range g.wave.Invaders {
 		for _, inv := range row {
-			if !inv.isDead {
+			if !inv.IsDead {
 				if rand.Float32() < constants.INVADER_FIRE_PROB {
 					// new laser at position
-					laserPos := inv.boundingBox.GetTopLeft().Shifted(1, 1)
+					laserPos := inv.BoundingBox.GetTopLeft().Shifted(1, 1)
 					g.invaderLasers[nextLaserInd] = NewLaser(&laserPos, 1)
 				}
 			}
@@ -104,27 +105,27 @@ func (g *gameState) checkLaserIntersection() {
 		return
 	}
 
-	if !g.wave.boundingBox.IsPointWithin(&g.activeLaser.position) {
+	if !g.wave.BoundingBox().IsPointWithin(&g.activeLaser.position) {
 		return
 	}
 
 	// search through invaders, see if laser hits them
-	invaders := g.wave.invaders
-	for _, row := range invaders {
+	invs := g.wave.Invaders
+	for _, row := range invs {
 		for _, inv := range row {
-			if inv.isDead {
+			if inv.IsDead {
 				continue
 			}
 
-			if inv.boundingBox.IsPointWithin(&g.activeLaser.position) {
-				inv.registerHit()
-				g.scoreTracker.addScore(int(inv.value))
+			if inv.BoundingBox.IsPointWithin(&g.activeLaser.position) {
+				inv.RegisterHit()
+				g.scoreTracker.addScore(int(inv.Value))
 				g.activeLaser = nil
 
-				if g.wave.numAliveInvaders() == 0 {
-					g.wave = NewInvaderWave(g.gameBoundary, &utils.Point{X: 0, Y: 0})
+				if g.wave.NumAliveInvaders() == 0 {
+					g.wave = invaders.NewInvaderWave(g.gameBoundary, &utils.Point{X: 0, Y: 0})
 				} else {
-					g.wave.onInvaderHit()
+					g.wave.OnInvaderHit()
 				}
 
 				return
@@ -169,7 +170,7 @@ func (g *gameState) begin() {
 
 func (g *gameState) getUI() []ui.AbstractUiComponent {
 	var allUI []ui.AbstractUiComponent
-	allUI = append(allUI, g.wave.getUI()...)
+	allUI = append(allUI, g.wave.GetUI()...)
 	allUI = append(allUI, g.player.getUI()...)
 	allUI = append(allUI, ui.GetDebugBoxUI(g.gameBoundary)...)
 	allUI = append(allUI, g.scoreTracker.getUI()...)
@@ -195,7 +196,7 @@ func NewGameState() *gameState {
 	}
 
 	return &gameState{
-		wave:         NewInvaderWave(&gameBoundary, &utils.Point{X: 0, Y: 0}),
+		wave:         invaders.NewInvaderWave(&gameBoundary, &utils.Point{X: 0, Y: 0}),
 		gameBoundary: &gameBoundary,
 		player:       NewPlayer(),
 		controller:   GetController(),

@@ -1,4 +1,4 @@
-package main
+package invaders
 
 import (
 	"space-invaders/constants"
@@ -12,7 +12,7 @@ import (
 type InvaderWave struct {
 	boundingBox  utils.Box
 	gameBoundary *utils.Box
-	invaders     [][]*Invader
+	Invaders     [][]*Invader
 	currentDir   string
 }
 
@@ -36,7 +36,7 @@ func NewInvaderWave(gameBoundary *utils.Box, startPoint *utils.Point) *InvaderWa
 		boundingBox:  waveBoundingBox,
 		gameBoundary: gameBoundary,
 		currentDir:   "LEFT",
-		invaders:     invaders,
+		Invaders:     invaders,
 	}
 }
 
@@ -62,7 +62,7 @@ func inferBoundingBox(gameBoundary *utils.Box, invaders [][]*Invader) utils.Box 
 
 	for _, invaderRow := range invaders {
 		for _, invader := range invaderRow {
-			if invader.isDead {
+			if invader.IsDead {
 				continue
 			}
 
@@ -76,7 +76,7 @@ func inferBoundingBox(gameBoundary *utils.Box, invaders [][]*Invader) utils.Box 
 	return utils.Box{X: minX, Y: minY, W: maxX - minX, H: maxY - minY}
 }
 
-func (w *InvaderWave) update() {
+func (w *InvaderWave) Update() {
 	w.moveWave()
 	// TODO: handle projecting forward later, for now naively move it
 }
@@ -95,27 +95,27 @@ func (w *InvaderWave) moveWave() {
 	w.boundingBox.X += xUpdate
 	w.boundingBox.Y += yUpdate
 
-	w.moveInvaders(xUpdate, yUpdate)
+	w.MoveInvaders(xUpdate, yUpdate)
 }
 
-func (w *InvaderWave) moveInvaders(x int, y int) {
-	for _, invaderRow := range w.invaders {
+func (w *InvaderWave) MoveInvaders(x int, y int) {
+	for _, invaderRow := range w.Invaders {
 		for _, invader := range invaderRow {
 			invader.moveBy(x, y)
 		}
 	}
 }
 
-func (w *InvaderWave) onInvaderHit() {
+func (w *InvaderWave) OnInvaderHit() {
 	// update boundingbox
-	w.boundingBox = inferBoundingBox(w.gameBoundary, w.invaders)
+	w.boundingBox = inferBoundingBox(w.gameBoundary, w.Invaders)
 }
 
-func (w *InvaderWave) numAliveInvaders() int {
+func (w *InvaderWave) NumAliveInvaders() int {
 	cnt := 0
-	for _, row := range w.invaders {
+	for _, row := range w.Invaders {
 		for _, inv := range row {
-			if !inv.isDead {
+			if !inv.IsDead {
 				cnt++
 			}
 		}
@@ -150,7 +150,7 @@ func (w *InvaderWave) isAtLateralBoundary() bool {
 	return false
 }
 
-func (w *InvaderWave) isAtBottom() bool {
+func (w *InvaderWave) IsAtBottom() bool {
 	return w.boundingBox.Y+w.boundingBox.H >= w.gameBoundary.Y+w.gameBoundary.H
 }
 
@@ -158,11 +158,11 @@ func (w *InvaderWave) BoundingBox() utils.Box {
 	return w.boundingBox
 }
 
-func (w *InvaderWave) getUI() []ui.AbstractUiComponent {
+func (w *InvaderWave) GetUI() []ui.AbstractUiComponent {
 	components := []ui.AbstractUiComponent{}
 	components = append(components, ui.GetDebugBoxUI(&w.boundingBox)...)
 
-	for _, invaderRow := range w.invaders {
+	for _, invaderRow := range w.Invaders {
 		for _, invader := range invaderRow {
 			components = append(components, invader.getUI()...)
 		}

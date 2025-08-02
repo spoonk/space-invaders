@@ -1,4 +1,4 @@
-package main
+package invaders
 
 import (
 	"space-invaders/ui"
@@ -7,9 +7,9 @@ import (
 
 type Invader struct {
 	pos         utils.Point
-	boundingBox utils.Box
-	value       int32
-	isDead      bool
+	BoundingBox utils.Box
+	Value       int32
+	IsDead      bool
 }
 
 const (
@@ -20,9 +20,9 @@ const (
 func NewInvader(xPos int, yPos int) *Invader {
 	return &Invader{
 		pos:         utils.Point{X: int(xPos), Y: int(yPos)},
-		value:       1,
-		isDead:      false,
-		boundingBox: utils.Box{X: xPos, Y: yPos, W: INVADER_W, H: INVADER_H},
+		Value:       1,
+		IsDead:      false,
+		BoundingBox: utils.Box{X: xPos, Y: yPos, W: INVADER_W, H: INVADER_H},
 	}
 }
 
@@ -30,18 +30,18 @@ func NewInvader(xPos int, yPos int) *Invader {
 func (i *Invader) moveBy(x int, y int) {
 	i.pos.X += x
 	i.pos.Y += y
-	i.boundingBox.X += x
-	i.boundingBox.Y += y
+	i.BoundingBox.X += x
+	i.BoundingBox.Y += y
 }
 
 func (i *Invader) getUI() []ui.AbstractUiComponent {
-	if i.isDead {
+	if i.IsDead {
 		return []ui.AbstractUiComponent{}
 	}
 
 	return append(
 		[]ui.AbstractUiComponent{ui.NewSpriteUIComponent("▛▀▜", i.topLeft())},
-		ui.GetDebugBoxUI(&i.boundingBox)...,
+		ui.GetDebugBoxUI(&i.BoundingBox)...,
 	)
 }
 
@@ -49,6 +49,6 @@ func (i *Invader) topLeft() utils.Point {
 	return i.pos
 }
 
-func (i *Invader) registerHit() {
-	i.isDead = true
+func (i *Invader) RegisterHit() {
+	i.IsDead = true
 }
