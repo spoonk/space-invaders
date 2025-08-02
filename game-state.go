@@ -13,7 +13,7 @@ import (
 
 type gameState struct {
 	wave          *InvaderWave
-	gameBoundary  *Box
+	gameBoundary  *utils.Box
 	player        *Player
 	controller    *KeyboardInputController
 	activeLaser   *Laser
@@ -74,7 +74,7 @@ func (g *gameState) updateInvaderLasers() {
 		} else {
 			las.update()
 			g.checkInvaderLaserIntersection()
-			if las.position.Y > g.gameBoundary.y+g.gameBoundary.h {
+			if las.position.Y > g.gameBoundary.Y+g.gameBoundary.H {
 				g.invaderLasers[ind] = nil
 			}
 		}
@@ -91,7 +91,7 @@ func (g *gameState) updateInvaderLasers() {
 			if !inv.isDead {
 				if rand.Float32() < constants.INVADER_FIRE_PROB {
 					// new laser at position
-					laserPos := inv.boundingBox.getTopLeft().Shifted(1, 1)
+					laserPos := inv.boundingBox.GetTopLeft().Shifted(1, 1)
 					g.invaderLasers[nextLaserInd] = NewLaser(&laserPos, 1)
 				}
 			}
@@ -104,7 +104,7 @@ func (g *gameState) checkLaserIntersection() {
 		return
 	}
 
-	if !g.wave.boundingBox.isPointWithin(&g.activeLaser.position) {
+	if !g.wave.boundingBox.IsPointWithin(&g.activeLaser.position) {
 		return
 	}
 
@@ -116,7 +116,7 @@ func (g *gameState) checkLaserIntersection() {
 				continue
 			}
 
-			if inv.boundingBox.isPointWithin(&g.activeLaser.position) {
+			if inv.boundingBox.IsPointWithin(&g.activeLaser.position) {
 				inv.registerHit()
 				g.scoreTracker.addScore(int(inv.value))
 				g.activeLaser = nil
@@ -141,7 +141,7 @@ func (g *gameState) checkInvaderLaserIntersection() {
 
 		playerBox := g.player.boundingBox()
 
-		if playerBox.isPointWithin(&laser.position) {
+		if playerBox.IsPointWithin(&laser.position) {
 			g.player.registerHit()
 			g.invaderLasers[ind] = nil
 		}
@@ -171,7 +171,7 @@ func (g *gameState) getUI() []ui.AbstractUiComponent {
 	var allUI []ui.AbstractUiComponent
 	allUI = append(allUI, g.wave.getUI()...)
 	allUI = append(allUI, g.player.getUI()...)
-	allUI = append(allUI, g.gameBoundary.getDebugUI()...)
+	allUI = append(allUI, ui.GetDebugBoxUI(g.gameBoundary)...)
 	allUI = append(allUI, g.scoreTracker.getUI()...)
 
 	if g.activeLaser != nil {
@@ -190,8 +190,8 @@ func (g *gameState) getUI() []ui.AbstractUiComponent {
 }
 
 func NewGameState() *gameState {
-	gameBoundary := Box{
-		x: constants.GAME_BOUNDARY.X, y: constants.GAME_BOUNDARY.Y, h: constants.GAME_BOUNDARY.H, w: constants.GAME_BOUNDARY.W,
+	gameBoundary := utils.Box{
+		X: constants.GAME_BOUNDARY.X, Y: constants.GAME_BOUNDARY.Y, H: constants.GAME_BOUNDARY.H, W: constants.GAME_BOUNDARY.W,
 	}
 
 	return &gameState{

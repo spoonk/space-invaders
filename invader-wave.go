@@ -10,8 +10,8 @@ import (
 // wave is responsible for moving all invaders within
 
 type InvaderWave struct {
-	boundingBox  Box
-	gameBoundary *Box
+	boundingBox  utils.Box
+	gameBoundary *utils.Box
 	invaders     [][]*Invader
 	currentDir   string
 }
@@ -24,7 +24,7 @@ type InvaderWave struct {
 // lead to you moving > 1 position in a single update
 
 // each wave has the exact same config of invaders
-func NewInvaderWave(gameBoundary *Box, startPoint *utils.Point) *InvaderWave {
+func NewInvaderWave(gameBoundary *utils.Box, startPoint *utils.Point) *InvaderWave {
 	if startPoint == nil {
 		startPoint = &utils.Point{X: 0, Y: 0}
 	}
@@ -53,10 +53,10 @@ func getInvaders(topLeft *utils.Point) [][]*Invader {
 	return invaders
 }
 
-func inferBoundingBox(gameBoundary *Box, invaders [][]*Invader) Box {
+func inferBoundingBox(gameBoundary *utils.Box, invaders [][]*Invader) utils.Box {
 	// assertion: at least one invader alive
-	minX := gameBoundary.x + gameBoundary.w
-	minY := gameBoundary.y + gameBoundary.h
+	minX := gameBoundary.X + gameBoundary.W
+	minY := gameBoundary.Y + gameBoundary.H
 	maxX := 0
 	maxY := 0
 
@@ -73,7 +73,7 @@ func inferBoundingBox(gameBoundary *Box, invaders [][]*Invader) Box {
 		}
 	}
 
-	return Box{x: minX, y: minY, w: maxX - minX, h: maxY - minY}
+	return utils.Box{X: minX, Y: minY, W: maxX - minX, H: maxY - minY}
 }
 
 func (w *InvaderWave) update() {
@@ -92,8 +92,8 @@ func (w *InvaderWave) moveWave() {
 	}
 	xUpdate += getDirScalar(w.currentDir) * constants.X_SPEED
 
-	w.boundingBox.x += xUpdate
-	w.boundingBox.y += yUpdate
+	w.boundingBox.X += xUpdate
+	w.boundingBox.Y += yUpdate
 
 	w.moveInvaders(xUpdate, yUpdate)
 }
@@ -141,26 +141,26 @@ func getOppositeDirection(dir string) string {
 
 // TODO: these should be box functions
 func (w *InvaderWave) isAtLateralBoundary() bool {
-	if w.currentDir == "LEFT" && w.boundingBox.x <= w.gameBoundary.leftBorderPos() {
+	if w.currentDir == "LEFT" && w.boundingBox.X <= w.gameBoundary.LeftBorderPos() {
 		return true
 	}
-	if w.currentDir == "RIGHT" && w.boundingBox.x+w.boundingBox.w >= w.gameBoundary.rightBorderPos() {
+	if w.currentDir == "RIGHT" && w.boundingBox.X+w.boundingBox.W >= w.gameBoundary.RightBorderPos() {
 		return true
 	}
 	return false
 }
 
 func (w *InvaderWave) isAtBottom() bool {
-	return w.boundingBox.y+w.boundingBox.h >= w.gameBoundary.y+w.gameBoundary.h
+	return w.boundingBox.Y+w.boundingBox.H >= w.gameBoundary.Y+w.gameBoundary.H
 }
 
-func (w *InvaderWave) BoundingBox() Box {
+func (w *InvaderWave) BoundingBox() utils.Box {
 	return w.boundingBox
 }
 
 func (w *InvaderWave) getUI() []ui.AbstractUiComponent {
 	components := []ui.AbstractUiComponent{}
-	components = append(components, w.boundingBox.getDebugUI()...)
+	components = append(components, ui.GetDebugBoxUI(&w.boundingBox)...)
 
 	for _, invaderRow := range w.invaders {
 		for _, invader := range invaderRow {

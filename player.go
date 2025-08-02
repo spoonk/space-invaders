@@ -32,8 +32,8 @@ func (p *Player) registerHit() {
 	p.lives--
 }
 
-func (p *Player) boundingBox() *Box {
-	return &Box{x: p.pos.X, y: p.pos.Y, h: 1, w: constants.PLAYER_W}
+func (p *Player) boundingBox() *utils.Box {
+	return &utils.Box{X: p.pos.X, Y: p.pos.Y, H: 1, W: constants.PLAYER_W}
 }
 
 func (p *Player) move() {

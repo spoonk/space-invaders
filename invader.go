@@ -7,7 +7,7 @@ import (
 
 type Invader struct {
 	pos         utils.Point
-	boundingBox Box
+	boundingBox utils.Box
 	value       int32
 	isDead      bool
 }
@@ -22,7 +22,7 @@ func NewInvader(xPos int, yPos int) *Invader {
 		pos:         utils.Point{X: int(xPos), Y: int(yPos)},
 		value:       1,
 		isDead:      false,
-		boundingBox: Box{x: xPos, y: yPos, w: INVADER_W, h: INVADER_H},
+		boundingBox: utils.Box{X: xPos, Y: yPos, W: INVADER_W, H: INVADER_H},
 	}
 }
 
@@ -30,8 +30,8 @@ func NewInvader(xPos int, yPos int) *Invader {
 func (i *Invader) moveBy(x int, y int) {
 	i.pos.X += x
 	i.pos.Y += y
-	i.boundingBox.x += x
-	i.boundingBox.y += y
+	i.boundingBox.X += x
+	i.boundingBox.Y += y
 }
 
 func (i *Invader) getUI() []ui.AbstractUiComponent {
@@ -41,7 +41,7 @@ func (i *Invader) getUI() []ui.AbstractUiComponent {
 
 	return append(
 		[]ui.AbstractUiComponent{ui.NewSpriteUIComponent("▛▀▜", i.topLeft())},
-		i.boundingBox.getDebugUI()...,
+		ui.GetDebugBoxUI(&i.boundingBox)...,
 	)
 }
 
