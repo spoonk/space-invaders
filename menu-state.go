@@ -1,5 +1,7 @@
 package main
 
+import "space-invaders/utils"
+
 type MenuState struct{}
 
 func (m *MenuState) advance() State {
@@ -18,6 +20,6 @@ func (m *MenuState) getUI() []AbstractUiComponent {
 	return []AbstractUiComponent{
 		NewSpriteUIComponent(
 			"Welcome to space invaders! Press 1 to play",
-			Point{x: 20, y: 20}),
+			utils.Point{X: 20, Y: 20}),
 	}
 }

@@ -1,15 +1,17 @@
 package main
 
+import "space-invaders/utils"
+
 type Laser struct {
-	position Point
+	position utils.Point
 	dir      int // +/- 1
 }
 
 func (l *Laser) update() {
-	l.position = l.position.add(Point{x: 0, y: l.dir})
+	l.position = l.position.Add(utils.Point{X: 0, Y: l.dir})
 }
 
-func NewLaser(at *Point, dir int) *Laser {
+func NewLaser(at *utils.Point, dir int) *Laser {
 	return &Laser{
 		position: *at,
 		dir:      dir,

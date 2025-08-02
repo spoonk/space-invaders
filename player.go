@@ -1,18 +1,21 @@
 package main
 
-import "space-invaders/constants"
+import (
+	"space-invaders/constants"
+	"space-invaders/utils"
+)
 
 type Player struct {
-	pos        Point
+	pos        utils.Point
 	controller *KeyboardInputController
 	lives      int
 }
 
-func (p *Player) moveTo(newPos Point) {
+func (p *Player) moveTo(newPos utils.Point) {
 	p.pos = newPos
 }
 
-func (p *Player) topLeft() Point {
+func (p *Player) topLeft() utils.Point {
 	return p.pos
 }
 
@@ -21,7 +24,7 @@ func (p *Player) getUI() []AbstractUiComponent {
 }
 
 func NewPlayer() *Player {
-	return &Player{pos: Point{constants.GAME_BOUNDARY.W / 2, constants.PLAYER_Y}, controller: GetController(), lives: 3}
+	return &Player{pos: utils.Point{X: constants.GAME_BOUNDARY.W / 2, Y: constants.PLAYER_Y}, controller: GetController(), lives: 3}
 }
 
 func (p *Player) registerHit() {
@@ -29,7 +32,7 @@ func (p *Player) registerHit() {
 }
 
 func (p *Player) boundingBox() *Box {
-	return &Box{x: p.pos.x, y: p.pos.y, h: 1, w: constants.PLAYER_W}
+	return &Box{x: p.pos.X, y: p.pos.Y, h: 1, w: constants.PLAYER_W}
 }
 
 func (p *Player) move() {
@@ -37,8 +40,8 @@ func (p *Player) move() {
 
 	currPos := p.pos
 	if press == 'a' {
-		p.moveTo(Point{x: currPos.x - 1, y: currPos.y})
+		p.moveTo(utils.Point{X: currPos.X - 1, Y: currPos.Y})
 	} else if press == 'd' {
-		p.moveTo(Point{x: currPos.x + 1, y: currPos.y})
+		p.moveTo(utils.Point{X: currPos.X + 1, Y: currPos.Y})
 	}
 }

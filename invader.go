@@ -1,7 +1,9 @@
 package main
 
+import "space-invaders/utils"
+
 type Invader struct {
-	pos         Point
+	pos         utils.Point
 	boundingBox Box
 	value       int32
 	isDead      bool
@@ -14,7 +16,7 @@ const (
 
 func NewInvader(xPos int, yPos int) *Invader {
 	return &Invader{
-		pos:         Point{x: int(xPos), y: int(yPos)},
+		pos:         utils.Point{X: int(xPos), Y: int(yPos)},
 		value:       1,
 		isDead:      false,
 		boundingBox: Box{x: xPos, y: yPos, w: INVADER_W, h: INVADER_H},
@@ -23,8 +25,8 @@ func NewInvader(xPos int, yPos int) *Invader {
 
 // move invader by specified distance
 func (i *Invader) moveBy(x int, y int) {
-	i.pos.x += x
-	i.pos.y += y
+	i.pos.X += x
+	i.pos.Y += y
 	i.boundingBox.x += x
 	i.boundingBox.y += y
 }
@@ -40,7 +42,7 @@ func (i *Invader) getUI() []AbstractUiComponent {
 	)
 }
 
-func (i *Invader) topLeft() Point {
+func (i *Invader) topLeft() utils.Point {
 	return i.pos
 }
 

@@ -1,6 +1,9 @@
 package main
 
-import "space-invaders/constants"
+import (
+	"space-invaders/constants"
+	"space-invaders/utils"
+)
 
 // wave designed as a collection of invaders
 // wave is responsible for moving all invaders within
@@ -20,9 +23,9 @@ type InvaderWave struct {
 // lead to you moving > 1 position in a single update
 
 // each wave has the exact same config of invaders
-func NewInvaderWave(gameBoundary *Box, startPoint *Point) *InvaderWave {
+func NewInvaderWave(gameBoundary *Box, startPoint *utils.Point) *InvaderWave {
 	if startPoint == nil {
-		startPoint = &Point{x: 0, y: 0}
+		startPoint = &utils.Point{X: 0, Y: 0}
 	}
 	invaders := getInvaders(startPoint)
 
@@ -36,13 +39,13 @@ func NewInvaderWave(gameBoundary *Box, startPoint *Point) *InvaderWave {
 	}
 }
 
-func getInvaders(topLeft *Point) [][]*Invader {
+func getInvaders(topLeft *utils.Point) [][]*Invader {
 	invaders := [][]*Invader{}
 	for i := range constants.INVADER_WAVE_HEIGHT {
 		invaderRow := []*Invader{}
 		for j := range constants.INVADER_WAVE_WIDTH {
-			invaderPos := topLeft.add(Point{x: j * (INVADER_W + 2), y: i * (INVADER_H + 1)})
-			invaderRow = append(invaderRow, NewInvader(invaderPos.x, invaderPos.y))
+			invaderPos := topLeft.Add(utils.Point{X: j * (INVADER_W + 2), Y: i * (INVADER_H + 1)})
+			invaderRow = append(invaderRow, NewInvader(invaderPos.X, invaderPos.Y))
 		}
 		invaders = append(invaders, invaderRow)
 	}
@@ -62,10 +65,10 @@ func inferBoundingBox(gameBoundary *Box, invaders [][]*Invader) Box {
 				continue
 			}
 
-			minX = min(minX, invader.topLeft().x)
-			maxX = max(maxX, invader.topLeft().x+INVADER_W)
-			minY = min(minY, invader.topLeft().y)
-			maxY = max(maxY, invader.topLeft().y+INVADER_H)
+			minX = min(minX, invader.topLeft().X)
+			maxX = max(maxX, invader.topLeft().X+INVADER_W)
+			minY = min(minY, invader.topLeft().Y)
+			maxY = max(maxY, invader.topLeft().Y+INVADER_H)
 		}
 	}
 

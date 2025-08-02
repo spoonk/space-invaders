@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"space-invaders/utils"
+)
 
 type GameOverState struct{ score int }
 
@@ -15,6 +18,6 @@ func (e *GameOverState) getUI() []AbstractUiComponent {
 	return []AbstractUiComponent{
 		NewSpriteUIComponent(
 			fmt.Sprintf("GAME OVER, you scored %d points. Press r to restart or q to quit", e.score),
-			Point{x: 20, y: 20}),
+			utils.Point{X: 20, Y: 20}),
 	}
 }

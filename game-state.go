@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"space-invaders/constants"
+	"space-invaders/utils"
 )
 
 // game state is responsible for managing entities in the game
@@ -43,7 +44,7 @@ func (g *gameState) updateLaser() {
 	if g.activeLaser != nil {
 		g.activeLaser.update()
 
-		if g.activeLaser.position.y <= 0 {
+		if g.activeLaser.position.Y <= 0 {
 			g.activeLaser = nil
 		}
 
@@ -72,7 +73,7 @@ func (g *gameState) updateInvaderLasers() {
 		} else {
 			las.update()
 			g.checkInvaderLaserIntersection()
-			if las.position.y > g.gameBoundary.y+g.gameBoundary.h {
+			if las.position.Y > g.gameBoundary.y+g.gameBoundary.h {
 				g.invaderLasers[ind] = nil
 			}
 		}
@@ -89,7 +90,7 @@ func (g *gameState) updateInvaderLasers() {
 			if !inv.isDead {
 				if rand.Float32() < constants.INVADER_FIRE_PROB {
 					// new laser at position
-					laserPos := inv.boundingBox.getTopLeft().shifted(1, 1)
+					laserPos := inv.boundingBox.getTopLeft().Shifted(1, 1)
 					g.invaderLasers[nextLaserInd] = NewLaser(&laserPos, 1)
 				}
 			}
@@ -120,7 +121,7 @@ func (g *gameState) checkLaserIntersection() {
 				g.activeLaser = nil
 
 				if g.wave.numAliveInvaders() == 0 {
-					g.wave = NewInvaderWave(g.gameBoundary, &Point{x: 0, y: 0})
+					g.wave = NewInvaderWave(g.gameBoundary, &utils.Point{X: 0, Y: 0})
 				} else {
 					g.wave.onInvaderHit()
 				}
@@ -152,7 +153,7 @@ func (g *gameState) handleShoot() {
 	}
 
 	at := g.player.pos
-	at.x = at.x + 1
+	at.X = at.X + 1
 
 	g.activeLaser = NewLaser(&at, -1)
 }
@@ -193,7 +194,7 @@ func NewGameState() *gameState {
 	}
 
 	return &gameState{
-		wave:         NewInvaderWave(&gameBoundary, &Point{x: 0, y: 0}),
+		wave:         NewInvaderWave(&gameBoundary, &utils.Point{X: 0, Y: 0}),
 		gameBoundary: &gameBoundary,
 		player:       NewPlayer(),
 		controller:   GetController(),

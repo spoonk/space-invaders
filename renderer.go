@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"space-invaders/utils"
+)
 
 const (
 	CLEAR_ANSI  = "\033[2J"
@@ -40,11 +43,11 @@ func (r *Renderer) cleanup() {
 	fmt.Print(SHOW_CURSOR)
 }
 
-func drawAtPosition(sprite string, p Point) {
+func drawAtPosition(sprite string, p utils.Point) {
 	moveCursorTo(p)
 	fmt.Print(sprite)
 }
 
-func moveCursorTo(p Point) {
-	fmt.Printf("\033[%d;%dH", p.y, p.x)
+func moveCursorTo(p utils.Point) {
+	fmt.Printf("\033[%d;%dH", p.Y, p.X)
 }
