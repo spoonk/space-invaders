@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"space-invaders/ui"
 	"space-invaders/utils"
 )
 
@@ -14,12 +15,12 @@ const (
 
 type Renderer struct{}
 
-func (r *Renderer) draw(ui []AbstractUiComponent) {
+func (r *Renderer) draw(components []ui.AbstractUiComponent) {
 	clearScreen()
-	for i := 0; i < len(ui); i++ {
-		elm := ui[i]
-		text := elm.getRasterized()
-		drawAtPosition(text, elm.getTopLeft())
+	for i := 0; i < len(components); i++ {
+		elm := components[i]
+		text := elm.GetRasterized()
+		drawAtPosition(text, elm.GetTopLeft())
 	}
 }
 

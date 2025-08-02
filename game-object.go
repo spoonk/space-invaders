@@ -1,9 +1,12 @@
 package main
 
-import "space-invaders/utils"
+import (
+	"space-invaders/ui"
+	"space-invaders/utils"
+)
 
 type GameObject interface {
 	moveTo(utils.Point)
 	topLeft() utils.Point
-	getUI() []AbstractUiComponent
+	getUI() []ui.AbstractUiComponent
 }

@@ -1,5 +1,7 @@
 package main
 
+import "space-invaders/ui"
+
 var STATE_TRANSITIONS = struct {
 	END, CONTINUE int
 }{
@@ -23,5 +25,5 @@ type AbstractGameState interface {
 	advance() State
 	isEnded() bool
 	begin()
-	getUI() []AbstractUiComponent
+	getUI() []ui.AbstractUiComponent
 }

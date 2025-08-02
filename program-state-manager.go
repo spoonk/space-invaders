@@ -1,5 +1,7 @@
 package main
 
+import "space-invaders/ui"
+
 type ProgramStateManager struct {
 	menu *MenuState
 	game *gameState
@@ -40,7 +42,7 @@ func (p *ProgramStateManager) update() {
 	}
 }
 
-func (p *ProgramStateManager) getUI() []AbstractUiComponent {
+func (p *ProgramStateManager) getUI() []ui.AbstractUiComponent {
 	if p.menu != nil {
 		return p.menu.getUI()
 	}
@@ -53,7 +55,7 @@ func (p *ProgramStateManager) getUI() []AbstractUiComponent {
 		return p.end.getUI()
 	}
 
-	return []AbstractUiComponent{}
+	return []ui.AbstractUiComponent{}
 	// return p.game.getUI()
 }
 

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"space-invaders/constants"
+	"space-invaders/ui"
 	"space-invaders/utils"
 )
 
@@ -18,16 +19,16 @@ func NewDebugPane() *DebugPane {
 	}
 }
 
-func (db *DebugPane) getUI(state *gameState) []AbstractUiComponent {
+func (db *DebugPane) getUI(state *gameState) []ui.AbstractUiComponent {
 	invaderWavePos := utils.Point{X: state.wave.boundingBox.x, Y: state.wave.boundingBox.y}
 	playerPos := state.player.topLeft()
 	playerLives := state.player.lives
 
-	components := []AbstractUiComponent{}
-	components = append(components, []AbstractUiComponent{
-		NewSpriteUIComponent(fmt.Sprintf("wave: (x: %d, y: %d)", invaderWavePos.X, invaderWavePos.Y), db.uiPosition.Shifted(0, 1)),
-		NewSpriteUIComponent(fmt.Sprintf("player: (x: %d, y: %d)", playerPos.X, playerPos.Y), db.uiPosition.Shifted(0, 2)),
-		NewSpriteUIComponent(fmt.Sprintf("lives remaining: %d", playerLives), db.uiPosition.Shifted(0, 3)),
+	components := []ui.AbstractUiComponent{}
+	components = append(components, []ui.AbstractUiComponent{
+		ui.NewSpriteUIComponent(fmt.Sprintf("wave: (x: %d, y: %d)", invaderWavePos.X, invaderWavePos.Y), db.uiPosition.Shifted(0, 1)),
+		ui.NewSpriteUIComponent(fmt.Sprintf("player: (x: %d, y: %d)", playerPos.X, playerPos.Y), db.uiPosition.Shifted(0, 2)),
+		ui.NewSpriteUIComponent(fmt.Sprintf("lives remaining: %d", playerLives), db.uiPosition.Shifted(0, 3)),
 	}...)
 
 	return components

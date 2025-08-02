@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"space-invaders/constants"
+	"space-invaders/ui"
 	"time"
 )
 
@@ -61,7 +62,7 @@ func testKeyboard() {
 
 	for {
 
-		r.draw([]AbstractUiComponent{})
+		r.draw([]ui.AbstractUiComponent{})
 		fmt.Printf("Last pressed: %c\n", controller.getLastKeypress())
 		fmt.Printf("Currently pressed pressed: %c\n", controller.getCurrentKeypress())
 		time.Sleep(constants.FRAME_DURATION * constants.NANOSECOND)

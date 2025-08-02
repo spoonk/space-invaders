@@ -1,4 +1,4 @@
-package main
+package ui
 
 import "space-invaders/utils"
 
@@ -7,11 +7,11 @@ type SpriteUIComponent struct {
 	topLeft utils.Point
 }
 
-func (s SpriteUIComponent) getTopLeft() utils.Point {
+func (s SpriteUIComponent) GetTopLeft() utils.Point {
 	return s.topLeft
 }
 
-func (s SpriteUIComponent) getRasterized() string {
+func (s SpriteUIComponent) GetRasterized() string {
 	return s.sprite
 }
 

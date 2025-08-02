@@ -1,6 +1,9 @@
 package main
 
-import "space-invaders/utils"
+import (
+	"space-invaders/ui"
+	"space-invaders/utils"
+)
 
 type Invader struct {
 	pos         utils.Point
@@ -31,13 +34,13 @@ func (i *Invader) moveBy(x int, y int) {
 	i.boundingBox.y += y
 }
 
-func (i *Invader) getUI() []AbstractUiComponent {
+func (i *Invader) getUI() []ui.AbstractUiComponent {
 	if i.isDead {
-		return []AbstractUiComponent{}
+		return []ui.AbstractUiComponent{}
 	}
 
 	return append(
-		[]AbstractUiComponent{NewSpriteUIComponent("▛▀▜", i.topLeft())},
+		[]ui.AbstractUiComponent{ui.NewSpriteUIComponent("▛▀▜", i.topLeft())},
 		i.boundingBox.getDebugUI()...,
 	)
 }

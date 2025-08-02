@@ -2,6 +2,7 @@ package main
 
 import (
 	"space-invaders/constants"
+	"space-invaders/ui"
 	"space-invaders/utils"
 )
 
@@ -19,8 +20,8 @@ func (p *Player) topLeft() utils.Point {
 	return p.pos
 }
 
-func (p *Player) getUI() []AbstractUiComponent {
-	return []AbstractUiComponent{NewSpriteUIComponent("^-^", p.topLeft())}
+func (p *Player) getUI() []ui.AbstractUiComponent {
+	return []ui.AbstractUiComponent{ui.NewSpriteUIComponent("^-^", p.topLeft())}
 }
 
 func NewPlayer() *Player {

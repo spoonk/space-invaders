@@ -2,6 +2,7 @@ package main
 
 import (
 	"space-invaders/constants"
+	"space-invaders/ui"
 	"space-invaders/utils"
 )
 
@@ -157,8 +158,8 @@ func (w *InvaderWave) BoundingBox() Box {
 	return w.boundingBox
 }
 
-func (w *InvaderWave) getUI() []AbstractUiComponent {
-	components := []AbstractUiComponent{}
+func (w *InvaderWave) getUI() []ui.AbstractUiComponent {
+	components := []ui.AbstractUiComponent{}
 	components = append(components, w.boundingBox.getDebugUI()...)
 
 	for _, invaderRow := range w.invaders {

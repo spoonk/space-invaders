@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"space-invaders/constants"
+	"space-invaders/ui"
 	"space-invaders/utils"
 )
 
@@ -166,8 +167,8 @@ func (g *gameState) begin() {
 	fmt.Println("[game] begin")
 }
 
-func (g *gameState) getUI() []AbstractUiComponent {
-	var allUI []AbstractUiComponent
+func (g *gameState) getUI() []ui.AbstractUiComponent {
+	var allUI []ui.AbstractUiComponent
 	allUI = append(allUI, g.wave.getUI()...)
 	allUI = append(allUI, g.player.getUI()...)
 	allUI = append(allUI, g.gameBoundary.getDebugUI()...)

@@ -2,6 +2,7 @@ package main
 
 import (
 	"space-invaders/constants"
+	"space-invaders/ui"
 	"space-invaders/utils"
 	"strconv"
 )
@@ -18,9 +19,9 @@ func (s *ScoreTracker) addScore(toAdd int) {
 	s.score += toAdd
 }
 
-func (s *ScoreTracker) getUI() []AbstractUiComponent {
-	return []AbstractUiComponent{
-		NewSpriteUIComponent(
+func (s *ScoreTracker) getUI() []ui.AbstractUiComponent {
+	return []ui.AbstractUiComponent{
+		ui.NewSpriteUIComponent(
 			strconv.Itoa(s.score), utils.Point{X: constants.SCORE_X, Y: constants.SCORE_Y},
 		),
 	}

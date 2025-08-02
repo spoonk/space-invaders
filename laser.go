@@ -1,6 +1,9 @@
 package main
 
-import "space-invaders/utils"
+import (
+	"space-invaders/ui"
+	"space-invaders/utils"
+)
 
 type Laser struct {
 	position utils.Point
@@ -18,6 +21,6 @@ func NewLaser(at *utils.Point, dir int) *Laser {
 	}
 }
 
-func (l *Laser) getUI() []AbstractUiComponent {
-	return []AbstractUiComponent{NewSpriteUIComponent("║", l.position)}
+func (l *Laser) getUI() []ui.AbstractUiComponent {
+	return []ui.AbstractUiComponent{ui.NewSpriteUIComponent("║", l.position)}
 }
