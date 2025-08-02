@@ -9,7 +9,7 @@ import (
 
 type DebugPane struct {
 	uiPosition utils.Point
-	state      *gameState
+	state      *GameState
 }
 
 func NewDebugPane() *DebugPane {
@@ -19,7 +19,7 @@ func NewDebugPane() *DebugPane {
 	}
 }
 
-func (db *DebugPane) getUI(state *gameState) []ui.AbstractUiComponent {
+func (db *DebugPane) getUI(state *GameState) []ui.AbstractUiComponent {
 	invaderWavePos := utils.Point{X: state.wave.BoundingBox().X, Y: state.wave.BoundingBox().Y}
 	playerPos := state.player.topLeft()
 	playerLives := state.player.lives

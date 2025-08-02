@@ -6,6 +6,7 @@ import (
 	"space-invaders/constants"
 	"space-invaders/invaders"
 	"space-invaders/keyboard"
+	"space-invaders/state"
 	"space-invaders/ui"
 	"space-invaders/utils"
 )
@@ -13,7 +14,7 @@ import (
 // game state is responsible for managing entities in the game
 // the involves removing things, creating things, ending the game, restarting it
 
-type gameState struct {
+type GameState struct {
 	wave          *invaders.InvaderWave
 	gameBoundary  *utils.Box
 	player        *Player
@@ -24,26 +25,26 @@ type gameState struct {
 	debugPane     *DebugPane
 }
 
-func (g *gameState) advance() State {
+func (g *GameState) advance() state.State {
 	g.wave.Update()
 
 	if g.wave.IsAtBottom() {
-		return EndState()
+		return state.EndState()
 	}
 	g.updateLaser()
 	g.updateInvaderLasers()
 
 	if g.player.lives == 0 {
-		return EndState()
+		return state.EndState()
 	}
 	g.player.move() // g.player.update()
 
-	return ContinueState()
+	return state.ContinueState()
 }
 
 // figure out how to shoot invaders
 
-func (g *gameState) updateLaser() {
+func (g *GameState) updateLaser() {
 	if g.activeLaser != nil {
 		g.activeLaser.update()
 
@@ -55,12 +56,12 @@ func (g *gameState) updateLaser() {
 
 	}
 
-	if controller.GetCurrentKeypress() == ' ' {
+	if g.controller.GetCurrentKeypress() == ' ' {
 		g.handleShoot()
 	}
 }
 
-func (g *gameState) updateInvaderLasers() {
+func (g *GameState) updateInvaderLasers() {
 	// we have 55 invaders, that's 55 entities updating per loop
 	// the probability we fire should be proportional to the number of non-dead invaders
 	// then just pick some scalar and tune it lol
@@ -101,7 +102,7 @@ func (g *gameState) updateInvaderLasers() {
 	}
 }
 
-func (g *gameState) checkLaserIntersection() {
+func (g *GameState) checkLaserIntersection() {
 	if g.activeLaser == nil {
 		return
 	}
@@ -135,7 +136,7 @@ func (g *gameState) checkLaserIntersection() {
 	}
 }
 
-func (g *gameState) checkInvaderLaserIntersection() {
+func (g *GameState) checkInvaderLaserIntersection() {
 	for ind, laser := range g.invaderLasers {
 		if laser == nil {
 			continue
@@ -150,7 +151,7 @@ func (g *gameState) checkInvaderLaserIntersection() {
 	}
 }
 
-func (g *gameState) handleShoot() {
+func (g *GameState) handleShoot() {
 	if g.activeLaser != nil {
 		return
 	}
@@ -161,15 +162,15 @@ func (g *gameState) handleShoot() {
 	g.activeLaser = NewLaser(&at, -1)
 }
 
-func (g *gameState) isEnded() bool {
+func (g *GameState) isEnded() bool {
 	return false
 }
 
-func (g *gameState) begin() {
+func (g *GameState) begin() {
 	fmt.Println("[game] begin")
 }
 
-func (g *gameState) getUI() []ui.AbstractUiComponent {
+func (g *GameState) getUI() []ui.AbstractUiComponent {
 	var allUI []ui.AbstractUiComponent
 	allUI = append(allUI, g.wave.GetUI()...)
 	allUI = append(allUI, g.player.getUI()...)
@@ -191,16 +192,16 @@ func (g *gameState) getUI() []ui.AbstractUiComponent {
 	return allUI
 }
 
-func NewGameState() *gameState {
+func NewGameState() *GameState {
 	gameBoundary := utils.Box{
 		X: constants.GAME_BOUNDARY.X, Y: constants.GAME_BOUNDARY.Y, H: constants.GAME_BOUNDARY.H, W: constants.GAME_BOUNDARY.W,
 	}
 
-	return &gameState{
+	return &GameState{
 		wave:         invaders.NewInvaderWave(&gameBoundary, &utils.Point{X: 0, Y: 0}),
 		gameBoundary: &gameBoundary,
 		player:       NewPlayer(),
-		controller:   GetController(),
+		controller:   keyboard.GetController(),
 		scoreTracker: NewScoreTracker(),
 		// invaderLasers: []*Laser{nil, nil, nil, nil, nil, nil, nil},
 		invaderLasers: make([]*Laser, constants.NUM_INVADER_LASER),

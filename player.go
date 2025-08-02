@@ -26,7 +26,7 @@ func (p *Player) getUI() []ui.AbstractUiComponent {
 }
 
 func NewPlayer() *Player {
-	return &Player{pos: utils.Point{X: constants.GAME_BOUNDARY.W / 2, Y: constants.PLAYER_Y}, controller: GetController(), lives: 3}
+	return &Player{pos: utils.Point{X: constants.GAME_BOUNDARY.W / 2, Y: constants.PLAYER_Y}, controller: keyboard.GetController(), lives: 3}
 }
 
 func (p *Player) registerHit() {

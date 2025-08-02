@@ -8,8 +8,6 @@ import (
 	"time"
 )
 
-var controller *keyboard.KeyboardInputController
-
 var Run = true
 
 func main() {
@@ -25,7 +23,7 @@ func gameLoop() {
 	handler.Init()
 	handler.RegisterCallback('q', func(_ rune) { handler.Cleanup(); Run = false })
 
-	controller = keyboard.NewKeyBoardInputController()
+	controller := keyboard.GetController()
 	controller.Init(handler)
 
 	program := NewProgramStateMaanger()
@@ -71,11 +69,4 @@ func testKeyboard() {
 		fmt.Printf("Currently pressed pressed: %c\n", controller.GetCurrentKeypress())
 		time.Sleep(constants.FRAME_DURATION * constants.NANOSECOND)
 	}
-}
-
-func GetController() *keyboard.KeyboardInputController {
-	if controller == nil {
-		fmt.Println("controller not instantiated")
-	}
-	return controller
 }

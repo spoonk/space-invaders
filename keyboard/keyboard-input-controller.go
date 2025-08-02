@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+var controller *KeyboardInputController
+
 const (
 	TIMER_DURATION_MS = 100 * constants.NANOSECOND
 	NO_INPUT          = -1
@@ -50,4 +52,11 @@ func NewKeyBoardInputController() *KeyboardInputController {
 	timer := time.NewTimer(0)
 	timer.Stop()
 	return &KeyboardInputController{pressExpireTimer: timer}
+}
+
+func GetController() *KeyboardInputController {
+	if controller == nil {
+		controller = NewKeyBoardInputController()
+	}
+	return controller
 }

@@ -1,22 +1,25 @@
 package main
 
-import "space-invaders/ui"
+import (
+	"space-invaders/state"
+	"space-invaders/ui"
+)
 
 type ProgramStateManager struct {
-	menu *MenuState
-	game *gameState
-	end  *GameOverState
+	menu *state.MenuState
+	game *GameState
+	end  *state.GameOverState
 }
 
 func (p *ProgramStateManager) init() {
-	p.menu = NewMenuState()
+	p.menu = state.NewMenuState()
 }
 
 func (p *ProgramStateManager) update() {
 	// right now I have to special case everything....
 	if p.menu != nil {
-		res := p.menu.advance()
-		if res == EndState() {
+		res := p.menu.Advance()
+		if res == state.EndState() {
 			p.game = NewGameState()
 			p.menu = nil
 		}
@@ -25,16 +28,16 @@ func (p *ProgramStateManager) update() {
 
 	if p.game != nil {
 		res := p.game.advance()
-		if res == EndState() {
-			p.end = &GameOverState{score: p.game.scoreTracker.score}
+		if res == state.EndState() {
+			p.end = &state.GameOverState{Score: p.game.scoreTracker.score}
 			p.game = nil
 		}
 		return
 	}
 
 	if p.end != nil {
-		res := p.end.advance()
-		if res == EndState() {
+		res := p.end.Advance()
+		if res == state.EndState() {
 			p.game = NewGameState()
 			p.end = nil
 		}
@@ -44,7 +47,7 @@ func (p *ProgramStateManager) update() {
 
 func (p *ProgramStateManager) getUI() []ui.AbstractUiComponent {
 	if p.menu != nil {
-		return p.menu.getUI()
+		return p.menu.GetUI()
 	}
 
 	if p.game != nil {
@@ -52,11 +55,10 @@ func (p *ProgramStateManager) getUI() []ui.AbstractUiComponent {
 	}
 
 	if p.end != nil {
-		return p.end.getUI()
+		return p.end.GetUI()
 	}
 
 	return []ui.AbstractUiComponent{}
-	// return p.game.getUI()
 }
 
 func NewProgramStateMaanger() *ProgramStateManager {
