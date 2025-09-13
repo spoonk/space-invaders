@@ -1,4 +1,4 @@
-package invaders
+package entities
 
 import (
 	"space-invaders/ui"
@@ -34,7 +34,7 @@ func (i *Invader) moveBy(x int, y int) {
 	i.BoundingBox.Y += y
 }
 
-func (i *Invader) getUI() []ui.AbstractUiComponent {
+func (i *Invader) GetUI() []ui.AbstractUiComponent {
 	if i.IsDead {
 		return []ui.AbstractUiComponent{}
 	}

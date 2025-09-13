@@ -35,7 +35,7 @@ func gameLoop() {
 
 	for Run {
 		program.update()
-		ui := program.getUI()
+		ui := program.GetUI()
 
 		r.draw(ui)
 

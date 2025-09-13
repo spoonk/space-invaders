@@ -19,10 +19,10 @@ func NewDebugPane() *DebugPane {
 	}
 }
 
-func (db *DebugPane) getUI(state *GameState) []ui.AbstractUiComponent {
+func (db *DebugPane) GetUI(state *GameState) []ui.AbstractUiComponent {
 	invaderWavePos := utils.Point{X: state.wave.BoundingBox().X, Y: state.wave.BoundingBox().Y}
-	playerPos := state.player.topLeft()
-	playerLives := state.player.lives
+	playerPos := state.player.TopLeft()
+	playerLives := state.player.Lives
 
 	components := []ui.AbstractUiComponent{}
 	components = append(components, []ui.AbstractUiComponent{

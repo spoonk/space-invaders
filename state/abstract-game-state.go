@@ -25,5 +25,5 @@ type AbstractGameState interface {
 	advance() State
 	isEnded() bool
 	begin()
-	getUI() []ui.AbstractUiComponent
+	GetUI() []ui.AbstractUiComponent
 }

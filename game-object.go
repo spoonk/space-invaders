@@ -8,5 +8,5 @@ import (
 type GameObject interface {
 	moveTo(utils.Point)
 	topLeft() utils.Point
-	getUI() []ui.AbstractUiComponent
+	GetUI() []ui.AbstractUiComponent
 }

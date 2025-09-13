@@ -1,4 +1,4 @@
-package invaders
+package entities
 
 import (
 	"space-invaders/constants"
@@ -164,7 +164,7 @@ func (w *InvaderWave) GetUI() []ui.AbstractUiComponent {
 
 	for _, invaderRow := range w.Invaders {
 		for _, invader := range invaderRow {
-			components = append(components, invader.getUI()...)
+			components = append(components, invader.GetUI()...)
 		}
 	}
 

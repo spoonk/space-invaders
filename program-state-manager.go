@@ -45,13 +45,13 @@ func (p *ProgramStateManager) update() {
 	}
 }
 
-func (p *ProgramStateManager) getUI() []ui.AbstractUiComponent {
+func (p *ProgramStateManager) GetUI() []ui.AbstractUiComponent {
 	if p.menu != nil {
 		return p.menu.GetUI()
 	}
 
 	if p.game != nil {
-		return p.game.getUI()
+		return p.game.GetUI()
 	}
 
 	if p.end != nil {
