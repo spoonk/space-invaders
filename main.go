@@ -5,6 +5,7 @@ import (
 	"space-invaders/constants"
 	"space-invaders/keyboard"
 	"space-invaders/ui"
+	"space-invaders/utils"
 	"time"
 )
 
@@ -16,7 +17,7 @@ func main() {
 }
 
 func gameLoop() {
-	r := Renderer{}
+	r := Renderer{center: utils.Point{X: 65, Y: 30}}
 	r.init()
 
 	handler := keyboard.NewKeyboardInput()

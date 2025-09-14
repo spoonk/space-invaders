@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"golang.org/x/term"
+	"space-invaders/constants"
 	"space-invaders/ui"
 	"space-invaders/utils"
 )
@@ -13,23 +15,24 @@ const (
 	HIDE_CURSOR = "\x1b[?25l"
 )
 
-type Renderer struct{}
+type Renderer struct {
+	center utils.Point
+}
 
 func (r *Renderer) draw(components []ui.AbstractUiComponent) {
 	clearScreen()
 	for i := 0; i < len(components); i++ {
 		elm := components[i]
 		text := elm.GetRasterized()
-		drawAtPosition(text, elm.GetTopLeft())
+		r.drawAtPosition(text, elm.GetTopLeft())
 	}
 }
 
-func (r Renderer) init() {
+func (r *Renderer) init() {
 	clearScreen()
 	hideCursor()
-}
 
-// stuff to clear screen
+}
 
 func clearScreen() {
 	fmt.Print(CLEAR_ANSI)
@@ -44,9 +47,24 @@ func (r *Renderer) cleanup() {
 	fmt.Print(SHOW_CURSOR)
 }
 
-func drawAtPosition(sprite string, p utils.Point) {
-	moveCursorTo(p)
+func (r *Renderer) drawAtPosition(sprite string, p utils.Point) {
+	normalizedPoint := r.normalizePosition(p)
+	moveCursorTo(normalizedPoint)
+	// todo: check if a sprite would go off screeen & don't render otherwise - actually, should never be off screen
 	fmt.Print(sprite)
+}
+
+func (r *Renderer) normalizePosition(p utils.Point) utils.Point {
+	width, height, err := term.GetSize(0)
+	if err != nil {
+		width = 100  // default values
+		height = 100 // default values
+	}
+	// TODO: introduce scaling from 'game space' to 'screen resolution'
+	normalizedX := p.X - constants.GAME_BOUNDARY.W/2
+	normalizedY := p.Y - constants.GAME_BOUNDARY.H/2
+	return utils.Point{X: normalizedX + width/2, Y: normalizedY + height/2}
+	// return utils.Point{X: normalizedX + r.center.X, Y: normalizedY + r.center.Y}
 }
 
 func moveCursorTo(p utils.Point) {
