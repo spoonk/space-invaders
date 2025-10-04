@@ -53,6 +53,7 @@ func (r *Renderer) drawAtPosition(sprite string, p utils.Point) {
 	normalizedPoint := r.normalizePosition(p)
 	moveCursorTo(normalizedPoint)
 	// todo: check if a sprite would go off screeen & don't render otherwise - actually, should never be off screen
+	// todo: here is where we'd scale the sprite to the resolution we want
 	fmt.Print(sprite)
 }
 
@@ -72,6 +73,7 @@ func (r *Renderer) normalizePosition(p utils.Point) utils.Point {
 }
 
 func (r *Renderer) gameSpaceToScreenSpace(gamePoint utils.Point) utils.Point {
+	// TODO: this will eventually need to be a bit more complicated. Need to leave some buffer room outside of the game. Can't have
 	screenWidth, screenHeight, err := term.GetSize(0)
 	if err != nil {
 		screenWidth = constants.GAME_BOUNDARY.W
