@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
-	"golang.org/x/term"
+	"math"
 	"space-invaders/constants"
 	"space-invaders/ui"
 	"space-invaders/utils"
+
+	"golang.org/x/term"
 )
 
 const (
@@ -54,17 +56,32 @@ func (r *Renderer) drawAtPosition(sprite string, p utils.Point) {
 	fmt.Print(sprite)
 }
 
+// centers a point around the middle of the screen
 func (r *Renderer) normalizePosition(p utils.Point) utils.Point {
-	width, height, err := term.GetSize(0)
+	screenWidth, screenHeight, err := term.GetSize(0)
 	if err != nil {
-		width = 100  // default values
-		height = 100 // default values
+		screenWidth = constants.GAME_BOUNDARY.W
+		screenHeight = constants.GAME_BOUNDARY.H
 	}
-	// TODO: introduce scaling from 'game space' to 'screen resolution'
 	normalizedX := p.X - constants.GAME_BOUNDARY.W/2
 	normalizedY := p.Y - constants.GAME_BOUNDARY.H/2
-	return utils.Point{X: normalizedX + width/2, Y: normalizedY + height/2}
-	// return utils.Point{X: normalizedX + r.center.X, Y: normalizedY + r.center.Y}
+
+	screenSpacePoint := r.gameSpaceToScreenSpace(utils.Point{X: normalizedX, Y: normalizedY})
+
+	return utils.Point{X: screenSpacePoint.X + screenWidth/2, Y: screenSpacePoint.Y + screenHeight/2}
+}
+
+func (r *Renderer) gameSpaceToScreenSpace(gamePoint utils.Point) utils.Point {
+	screenWidth, screenHeight, err := term.GetSize(0)
+	if err != nil {
+		screenWidth = constants.GAME_BOUNDARY.W
+		screenHeight = constants.GAME_BOUNDARY.H
+	}
+
+	xScalar := float64(screenWidth) / float64(constants.GAME_BOUNDARY.W)
+	yScalar := float64(screenHeight) / float64(constants.GAME_BOUNDARY.H)
+
+	return utils.Point{X: int(math.Round(xScalar * float64(gamePoint.X))), Y: int(math.Round(yScalar * float64(gamePoint.Y)))}
 }
 
 func moveCursorTo(p utils.Point) {
