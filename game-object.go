@@ -9,4 +9,5 @@ type GameObject interface {
 	moveTo(utils.Point)
 	topLeft() utils.Point
 	GetUI() []ui.AbstractUiComponent
+	Container() utils.Box
 }

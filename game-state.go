@@ -31,7 +31,7 @@ func (g *GameState) advance() state.State {
 	if g.wave.IsAtBottom() {
 		return state.EndState()
 	}
-	g.updateLaser()
+	g.updatePlayerLaser()
 	g.updateInvaderLasers()
 
 	if g.player.Lives == 0 {
@@ -44,7 +44,7 @@ func (g *GameState) advance() state.State {
 
 // figure out how to shoot invaders
 
-func (g *GameState) updateLaser() {
+func (g *GameState) updatePlayerLaser() {
 	if g.activeLaser != nil {
 		g.activeLaser.Update()
 
@@ -53,7 +53,6 @@ func (g *GameState) updateLaser() {
 		}
 
 		g.checkLaserIntersection()
-
 	}
 
 	if g.controller.GetCurrentKeypress() == ' ' {

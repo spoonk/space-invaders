@@ -2,7 +2,7 @@ package constants
 
 // file containing high-level configuration constants
 
-const DEBUG_BOUNDARY = false
+const DEBUG_BOUNDARY = true
 
 var GAME_BOUNDARY = struct {
 	X, Y, H, W int
