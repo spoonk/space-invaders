@@ -32,8 +32,8 @@ func (r *Renderer) draw(components []ui.AbstractUiComponent) {
 	for i := 0; i < len(components); i++ {
 		elm := components[i]
 		// TODO: test out rasterizing here
-		text := elm.GetRasterized()
-		r.drawAtPosition([]string{text}, elm.GetTopLeft())
+		// text := elm.GetRasterized()
+		// r.drawAtPosition([]string{text}, elm.GetTopLeft())
 		r.drawAtPosition(scaled, elm.GetTopLeft())
 	}
 
@@ -109,7 +109,7 @@ func moveCursorTo(p utils.Point) {
 // TODO: just make rasterization udpates here
 
 func (r *Renderer) scaleSprite(image [][]float64, gameSpaceContainer *utils.Box) []string {
-	screenHeightPx, screenWidthPx := r.getScreenSize()
+	screenWidthPx, screenHeightPx := r.getScreenSize()
 
 	// proportion of game space taken up by bounding box
 	relativeHeight := float64(gameSpaceContainer.H) / float64(constants.GAME_BOUNDARY.H)
@@ -118,8 +118,6 @@ func (r *Renderer) scaleSprite(image [][]float64, gameSpaceContainer *utils.Box)
 	// scale the image to these values
 	finalHeightPx := int32(relativeHeight * float64(screenHeightPx))
 	finalWidthPx := int32(relativeWidth * float64(screenWidthPx))
-	// finalWidthPx := 10
-	// finalHeightPx := 10
 
 	finalImage := scaleImageToResolution(&image, int(finalHeightPx), int(finalWidthPx))
 	asciified := mapImageToAscii(&finalImage)

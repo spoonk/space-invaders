@@ -172,21 +172,21 @@ func (g *GameState) begin() {
 func (g *GameState) GetUI() []ui.AbstractUiComponent {
 	var allUI []ui.AbstractUiComponent
 	allUI = append(allUI, g.wave.GetUI()...)
-	allUI = append(allUI, g.player.GetUI()...)
-	allUI = append(allUI, ui.GetDebugBoxUI(g.gameBoundary)...)
-	allUI = append(allUI, g.scoreTracker.GetUI()...)
+	// allUI = append(allUI, g.player.GetUI()...)
+	// allUI = append(allUI, ui.GetDebugBoxUI(g.gameBoundary)...)
+	// allUI = append(allUI, g.scoreTracker.GetUI()...)
 
-	if g.activeLaser != nil {
-		allUI = append(allUI, g.activeLaser.GetUI()...)
-	}
+	// if g.activeLaser != nil {
+	// 	allUI = append(allUI, g.activeLaser.GetUI()...)
+	// }
 
-	for _, invLaser := range g.invaderLasers {
-		if invLaser != nil {
-			allUI = append(allUI, invLaser.GetUI()...)
-		}
-	}
+	// for _, invLaser := range g.invaderLasers {
+	// 	if invLaser != nil {
+	// 		allUI = append(allUI, invLaser.GetUI()...)
+	// 	}
+	// }
 
-	allUI = append(allUI, g.debugPane.GetUI(g)...)
+	// allUI = append(allUI, g.debugPane.GetUI(g)...)
 
 	return allUI
 }
