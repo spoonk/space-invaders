@@ -12,6 +12,7 @@ import (
 var Run = true
 
 func main() {
+	// runtime.Breakpoint()
 	// testKeyboard()
 	gameLoop()
 }
@@ -64,7 +65,6 @@ func testKeyboard() {
 	go handler.Loop()
 
 	for {
-
 		r.draw([]ui.AbstractUiComponent{})
 		fmt.Printf("Last pressed: %c\n", controller.GetLastKeypress())
 		fmt.Printf("Currently pressed pressed: %c\n", controller.GetCurrentKeypress())

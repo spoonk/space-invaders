@@ -8,6 +8,10 @@ import (
 	"space-invaders/utils"
 
 	"golang.org/x/term"
+	"image"
+	_ "image/jpeg" // Register JPEG decoder
+	_ "image/png"  // Register PNG decoder
+	"os"
 )
 
 const (
@@ -23,12 +27,16 @@ type Renderer struct {
 
 func (r *Renderer) draw(components []ui.AbstractUiComponent) {
 	clearScreen()
+	img, _ := readImageToFloat64("invader.png")
+	scaled := r.scaleSprite(img, &utils.Box{X: 0, Y: 0, H: 1, W: 3})
 	for i := 0; i < len(components); i++ {
 		elm := components[i]
 		// TODO: test out rasterizing here
 		text := elm.GetRasterized()
-		r.drawAtPosition(text, elm.GetTopLeft())
+		r.drawAtPosition([]string{text}, elm.GetTopLeft())
+		r.drawAtPosition(scaled, elm.GetTopLeft())
 	}
+
 }
 
 func (r *Renderer) init() {
@@ -50,19 +58,22 @@ func (r *Renderer) cleanup() {
 	fmt.Print(SHOW_CURSOR)
 }
 
-func (r *Renderer) drawAtPosition(sprite string, p utils.Point) {
+func (r *Renderer) drawAtPosition(sprite []string, p utils.Point) {
 	normalizedPoint := r.normalizePosition(p)
-	moveCursorTo(normalizedPoint)
-	fmt.Print(sprite)
+	for r := range sprite {
+		newPoint := utils.Point{X: normalizedPoint.X, Y: normalizedPoint.Y + r}
+		if newPoint.X < 0 || newPoint.Y < 0 {
+			continue
+		}
+		moveCursorTo(newPoint)
+		fmt.Print(sprite[r])
+	}
 }
 
 // centers a point around the middle of the screen
 func (r *Renderer) normalizePosition(p utils.Point) utils.Point {
-	screenWidth, screenHeight, err := term.GetSize(0)
-	if err != nil {
-		screenWidth = constants.GAME_BOUNDARY.W
-		screenHeight = constants.GAME_BOUNDARY.H
-	}
+	screenWidth, screenHeight := r.getScreenSize()
+
 	normalizedX := p.X - constants.GAME_BOUNDARY.W/2
 	normalizedY := p.Y - constants.GAME_BOUNDARY.H/2
 
@@ -79,7 +90,7 @@ func (r *Renderer) getScreenSize() (int, int) {
 		screenHeight = constants.GAME_BOUNDARY.H
 	}
 
-	return screenHeight, screenWidth
+	return screenWidth, screenHeight
 }
 
 func (r *Renderer) gameSpaceToScreenSpace(gamePoint utils.Point) utils.Point {
@@ -98,7 +109,7 @@ func moveCursorTo(p utils.Point) {
 // TODO: just make rasterization udpates here
 
 func (r *Renderer) scaleSprite(image [][]float64, gameSpaceContainer *utils.Box) []string {
-	screenWidthPx, screenHeightPx := r.getScreenSize()
+	screenHeightPx, screenWidthPx := r.getScreenSize()
 
 	// proportion of game space taken up by bounding box
 	relativeHeight := float64(gameSpaceContainer.H) / float64(constants.GAME_BOUNDARY.H)
@@ -107,11 +118,13 @@ func (r *Renderer) scaleSprite(image [][]float64, gameSpaceContainer *utils.Box)
 	// scale the image to these values
 	finalHeightPx := int32(relativeHeight * float64(screenHeightPx))
 	finalWidthPx := int32(relativeWidth * float64(screenWidthPx))
+	// finalWidthPx := 10
+	// finalHeightPx := 10
 
 	finalImage := scaleImageToResolution(&image, int(finalHeightPx), int(finalWidthPx))
+	asciified := mapImageToAscii(&finalImage)
 
-	return mapImageToAscii(&finalImage)
-
+	return asciified
 }
 
 func scaleImageToResolution(image *[][]float64, height int, width int) [][]int {
@@ -180,12 +193,16 @@ func mapImageToAscii(image *[][]int) []string {
 	finalImage := make([]string, height)
 
 	max := getMaxValue(image)
-	valToIndex := max / len(chars)
+	valToIndex := float64(len(chars)) / float64(max)
 
 	for r := 0; r < height; r++ {
 		row := ""
 		for c := 0; c < width; c++ {
-			ind := int(valToIndex * ((*image)[r][c]))
+			ind := int(valToIndex * float64(((*image)[r][c])))
+			if ind >= len(chars) {
+				ind = len(chars) - 1
+			}
+
 			row += string(chars[ind])
 		}
 
@@ -204,4 +221,40 @@ func getMaxValue(image *[][]int) int {
 		}
 	}
 	return max
+}
+
+func readImageToFloat64(filePath string) ([][]float64, error) {
+	// 1. Open the file
+	file, err := os.Open(filePath)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	// 2. Decode the image
+	img, _, err := image.Decode(file)
+	if err != nil {
+		return nil, err
+	}
+
+	bounds := img.Bounds()
+	width, height := bounds.Max.X, bounds.Max.Y
+
+	// 3. Initialize the 2D slice
+	pixels := make([][]float64, height)
+	for y := 0; y < height; y++ {
+		pixels[y] = make([]float64, width)
+		for x := 0; x < width; x++ {
+			// 4. Get pixel color and convert to RGBA
+			r, g, b, _ := img.At(x, y).RGBA()
+
+			// Go's RGBA() returns values in range [0, 65535].
+			// We convert them to [0, 255] for standard float representation.
+			lum := 0.299*float64(r>>8) + 0.587*float64(g>>8) + 0.114*float64(b>>8)
+
+			pixels[y][x] = lum
+		}
+	}
+
+	return pixels, nil
 }
