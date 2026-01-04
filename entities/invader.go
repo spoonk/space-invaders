@@ -45,6 +45,15 @@ func (i *Invader) GetUI() []ui.AbstractUiComponent {
 	)
 }
 
+var image [][]float64 = nil
+
+func (i *Invader) GetImage() *[][]float64 {
+	if image == nil {
+		image, _ = utils.ReadImageToFloat64("invader.png")
+	}
+	return &image
+}
+
 func (i *Invader) topLeft() utils.Point {
 	return i.pos
 }
