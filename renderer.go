@@ -139,8 +139,8 @@ func scaleImageToResolution(image *[][]float64, height int, width int) [][]int {
 	}
 
 	// Calculate scale factors
-	rowScale := float64(srcH-1) / float64(height-1)
-	colScale := float64(srcW-1) / float64(width-1)
+	rowScale := float64(srcH) / float64(height)
+	colScale := float64(srcW) / float64(width)
 
 	for r := 0; r < height; r++ {
 		for c := 0; c < width; c++ {
