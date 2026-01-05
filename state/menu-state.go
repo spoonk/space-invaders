@@ -20,8 +20,8 @@ func NewMenuState() *MenuState {
 	return &MenuState{}
 }
 
-func (m *MenuState) GetUI() []ui.AbstractUiComponent {
-	return []ui.AbstractUiComponent{
+func (m *MenuState) GetStaticUI() []ui.StaticUI {
+	return []ui.StaticUI{
 		ui.NewSpriteUIComponent(
 			"Welcome to space invaders! Press 1 to play",
 			utils.Point{X: 20, Y: 20}),
