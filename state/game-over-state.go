@@ -16,7 +16,7 @@ func (e *GameOverState) Advance() State {
 	return ContinueState()
 }
 
-func (e *GameOverState) GetUI() []ui.StaticUI {
+func (e *GameOverState) GetStaticUI() []ui.StaticUI {
 	return []ui.StaticUI{
 		ui.NewSpriteUIComponent(
 			fmt.Sprintf("GAME OVER, you scored %d points. Press r to restart or q to quit", e.Score),

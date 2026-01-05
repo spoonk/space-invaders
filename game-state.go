@@ -192,39 +192,20 @@ func (g *GameState) GetStaticUI() []ui.StaticUI {
 	return allUI
 }
 
-//	func (g *GameState) GetStaticUI() []ui.AbstractUiComponent {
-//		var allUI []ui.AbstractUiComponent
-//		allUI = append(allUI, g.wave.GetUI()...)
-//		// allUI = append(allUI, g.player.GetUI()...)
-//		// allUI = append(allUI, ui.GetDebugBoxUI(g.gameBoundary)...)
-//		// allUI = append(allUI, g.scoreTracker.GetUI()...)
-//
-//		// if g.activeLaser != nil {
-//		// 	allUI = append(allUI, g.activeLaser.GetUI()...)
-//		// }
-//
-//		// for _, invLaser := range g.invaderLasers {
-//		// 	if invLaser != nil {
-//		// 		allUI = append(allUI, invLaser.GetUI()...)
-//		// 	}
-//		// }
-//
-//		// allUI = append(allUI, g.debugPane.GetUI(g)...)
-//
-//		return allUI
-//	}
+func (g *GameState) GetDynamicUI() []ui.DynamicUI {
+	return []ui.DynamicUI{}
+}
 func NewGameState() *GameState {
 	gameBoundary := utils.Box{
 		X: constants.GAME_BOUNDARY.X, Y: constants.GAME_BOUNDARY.Y, H: constants.GAME_BOUNDARY.H, W: constants.GAME_BOUNDARY.W,
 	}
 
 	return &GameState{
-		wave:         entities.NewInvaderWave(&gameBoundary, &utils.Point{X: 0, Y: 0}),
-		gameBoundary: &gameBoundary,
-		player:       entities.NewPlayer(),
-		controller:   keyboard.GetController(),
-		scoreTracker: NewScoreTracker(),
-		// invaderLasers: []*Laser{nil, nil, nil, nil, nil, nil, nil},
+		wave:          entities.NewInvaderWave(&gameBoundary, &utils.Point{X: 0, Y: 0}),
+		gameBoundary:  &gameBoundary,
+		player:        entities.NewPlayer(),
+		controller:    keyboard.GetController(),
+		scoreTracker:  NewScoreTracker(),
 		invaderLasers: make([]*entities.Laser, constants.NUM_INVADER_LASER),
 		debugPane:     NewDebugPane(),
 	}

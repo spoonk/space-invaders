@@ -55,7 +55,7 @@ func (p *ProgramStateManager) GetStaticUI() []ui.StaticUI {
 	}
 
 	if p.end != nil {
-		return p.end.GetUI()
+		return p.end.GetStaticUI()
 	}
 
 	return []ui.StaticUI{}
@@ -65,4 +65,11 @@ func NewProgramStateMaanger() *ProgramStateManager {
 	return &ProgramStateManager{}
 }
 
-// define
+func (p *ProgramStateManager) GetDynamicUI() []ui.DynamicUI {
+
+	if p.game == nil {
+		return []ui.DynamicUI{}
+	}
+
+	return p.game.GetDynamicUI()
+}

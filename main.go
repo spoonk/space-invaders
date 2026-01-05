@@ -37,10 +37,12 @@ func gameLoop() {
 
 	for Run {
 		program.update()
-		ui := program.GetStaticUI()
-		// TODO: resolve path to dynamic ui
+		staticUI := program.GetStaticUI()
+		// dynamicUI := program.GetDynamicUI()
 
-		r.draw(ui)
+		// map dynamic -> static UI
+
+		r.draw(staticUI)
 
 		time.Sleep(time.Duration(constants.FRAME_DURATION * constants.NANOSECOND))
 	}
