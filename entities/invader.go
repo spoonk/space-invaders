@@ -45,6 +45,13 @@ func (i *Invader) GetStaticUI() []ui.StaticUI {
 	)
 }
 
+// TODO: GetDynamicUI
+
+func (i *Invader) GetDynamicUI []ui.DynamicUI {
+	return []ui.DynamicUI
+
+}
+
 var image [][]float64 = nil
 
 func (i *Invader) GetImage() *[][]float64 {
