@@ -10,7 +10,7 @@ var GAME_BOUNDARY = struct {
 	X: 0, Y: 0, H: 30, W: 125,
 }
 
-const PLAYER_Y = 30
+const PLAYER_Y = 28
 
 const (
 	INVADER_WAVE_HEIGHT = 5

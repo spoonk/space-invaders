@@ -173,7 +173,7 @@ func (g *GameState) GetStaticUI() []ui.StaticUI {
 	var allUI []ui.StaticUI
 
 	allUI = append(allUI, g.wave.GetStaticUI()...)
-	allUI = append(allUI, g.player.GetStaticUI()...)
+	// allUI = append(allUI, g.player.GetStaticUI()...)
 	allUI = append(allUI, ui.GetDebugBoxUI(g.gameBoundary)...)
 	allUI = append(allUI, g.scoreTracker.GetStaticUI()...)
 
@@ -196,6 +196,7 @@ func (g *GameState) GetDynamicUI() []ui.DynamicUI {
 	allUI := []ui.DynamicUI{}
 
 	allUI = append(allUI, g.wave.GetDynamicUI()...)
+	allUI = append(allUI, g.player.GetDynamicUI()...)
 
 	return allUI
 

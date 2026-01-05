@@ -25,6 +25,10 @@ func (p *Player) GetStaticUI() []ui.StaticUI {
 	return []ui.StaticUI{ui.NewSpriteUIComponent("^-^", p.TopLeft())}
 }
 
+func (p *Player) GetDynamicUI() []ui.DynamicUI {
+	return []ui.DynamicUI{ui.NewDynamicUI("player.png", *p.BoundingBox())}
+}
+
 func NewPlayer() *Player {
 	return &Player{Pos: utils.Point{X: constants.GAME_BOUNDARY.W / 2, Y: constants.PLAYER_Y}, controller: keyboard.GetController(), Lives: 3}
 }

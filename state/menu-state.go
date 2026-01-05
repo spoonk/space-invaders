@@ -3,7 +3,6 @@ package state
 import (
 	"space-invaders/keyboard"
 	"space-invaders/ui"
-	"space-invaders/utils"
 )
 
 type MenuState struct{}
@@ -21,9 +20,5 @@ func NewMenuState() *MenuState {
 }
 
 func (m *MenuState) GetStaticUI() []ui.StaticUI {
-	return []ui.StaticUI{
-		ui.NewSpriteUIComponent(
-			"Welcome to space invaders! Press 1 to play",
-			utils.Point{X: 20, Y: 20}),
-	}
+	return []ui.StaticUI{ui.NewCenteredTextUIComponent("Welcome to space invaders! Press 1 to play")}
 }
