@@ -158,13 +158,13 @@ func (w *InvaderWave) BoundingBox() utils.Box {
 	return w.boundingBox
 }
 
-func (w *InvaderWave) GetUI() []ui.AbstractUiComponent {
-	components := []ui.AbstractUiComponent{}
+func (w *InvaderWave) GetStaticUI() []ui.StaticUI {
+	components := []ui.StaticUI{}
 	components = append(components, ui.GetDebugBoxUI(&w.boundingBox)...)
 
 	for _, invaderRow := range w.Invaders {
 		for _, invader := range invaderRow {
-			components = append(components, invader.GetUI()...)
+			components = append(components, invader.GetStaticUI()...)
 		}
 	}
 

@@ -37,7 +37,8 @@ func gameLoop() {
 
 	for Run {
 		program.update()
-		ui := program.GetUI()
+		ui := program.GetStaticUI()
+		// TODO: resolve path to dynamic ui
 
 		r.draw(ui)
 
@@ -65,7 +66,7 @@ func testKeyboard() {
 	go handler.Loop()
 
 	for {
-		r.draw([]ui.AbstractUiComponent{})
+		r.draw([]ui.StaticUI{})
 		fmt.Printf("Last pressed: %c\n", controller.GetLastKeypress())
 		fmt.Printf("Currently pressed pressed: %c\n", controller.GetCurrentKeypress())
 		time.Sleep(constants.FRAME_DURATION * constants.NANOSECOND)

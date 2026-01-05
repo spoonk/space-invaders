@@ -34,13 +34,13 @@ func (i *Invader) moveBy(x int, y int) {
 	i.BoundingBox.Y += y
 }
 
-func (i *Invader) GetUI() []ui.AbstractUiComponent {
+func (i *Invader) GetStaticUI() []ui.StaticUI {
 	if i.IsDead {
-		return []ui.AbstractUiComponent{}
+		return []ui.StaticUI{}
 	}
 
 	return append(
-		[]ui.AbstractUiComponent{ui.NewSpriteUIComponent("▛▀▜", i.topLeft())},
+		[]ui.StaticUI{ui.NewSpriteUIComponent("▛▀▜", i.topLeft())},
 		ui.GetDebugBoxUI(&i.BoundingBox)...,
 	)
 }

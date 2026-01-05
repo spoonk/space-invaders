@@ -4,5 +4,10 @@ import "space-invaders/utils"
 
 type AbstractUiComponent interface {
 	GetTopLeft() utils.Point
-	GetRasterized() string // bad, want to eventually do getSprite
+	GetRasterized() []string
+}
+
+type StaticUI interface {
+	GetTopLeft() utils.Point
+	GetRasterized() []string
 }

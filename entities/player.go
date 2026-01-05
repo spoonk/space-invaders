@@ -21,8 +21,8 @@ func (p *Player) TopLeft() utils.Point {
 	return p.Pos
 }
 
-func (p *Player) GetUI() []ui.AbstractUiComponent {
-	return []ui.AbstractUiComponent{ui.NewSpriteUIComponent("^-^", p.TopLeft())}
+func (p *Player) GetStaticUI() []ui.StaticUI {
+	return []ui.StaticUI{ui.NewSpriteUIComponent("^-^", p.TopLeft())}
 }
 
 func NewPlayer() *Player {

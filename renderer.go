@@ -23,16 +23,16 @@ type Renderer struct {
 	center utils.Point
 }
 
-func (r *Renderer) draw(components []ui.AbstractUiComponent) {
+func (r *Renderer) draw(components []ui.StaticUI) {
 	clearScreen()
-	img, _ := utils.ReadImageToFloat64("invader.png")
-	scaled := r.scaleSprite(img, &utils.Box{X: 0, Y: 0, H: 1, W: 3})
+	// img, _ := utils.ReadImageToFloat64("invader.png")
+	// scaled := r.scaleSprite(img, &utils.Box{X: 0, Y: 0, H: 1, W: 3})
 	for i := 0; i < len(components); i++ {
 		elm := components[i]
 		// TODO: test out rasterizing here
-		// text := elm.GetRasterized()
-		// r.drawAtPosition([]string{text}, elm.GetTopLeft())
-		r.drawAtPosition(scaled, elm.GetTopLeft())
+		text := elm.GetRasterized()
+		r.drawAtPosition(text, elm.GetTopLeft())
+		// r.drawAtPosition(scaled, elm.GetTopLeft())
 	}
 }
 

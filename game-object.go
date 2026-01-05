@@ -8,6 +8,6 @@ import (
 type GameObject interface {
 	moveTo(utils.Point)
 	topLeft() utils.Point
-	GetUI() []ui.AbstractUiComponent
+	GetUI() []ui.StaticUI
 	Container() utils.Box
 }

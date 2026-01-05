@@ -21,6 +21,6 @@ func NewLaser(at *utils.Point, dir int) *Laser {
 	}
 }
 
-func (l *Laser) GetUI() []ui.AbstractUiComponent {
-	return []ui.AbstractUiComponent{ui.NewSpriteUIComponent("║", l.Position)}
+func (l *Laser) GetStaticUI() []ui.StaticUI {
+	return []ui.StaticUI{ui.NewSpriteUIComponent("║", l.Position)}
 }

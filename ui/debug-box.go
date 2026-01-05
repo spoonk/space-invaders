@@ -6,8 +6,8 @@ import (
 )
 
 // func (b *Box) getDebugUI() []ui.AbstractUiComponent {
-func GetDebugBoxUI(b *utils.Box) []AbstractUiComponent {
-	components := []AbstractUiComponent{}
+func GetDebugBoxUI(b *utils.Box) []StaticUI {
+	components := []StaticUI{}
 
 	if !constants.DEBUG_BOUNDARY {
 		return components
@@ -25,7 +25,7 @@ func GetDebugBoxUI(b *utils.Box) []AbstractUiComponent {
 	}
 
 	components = append(components,
-		[]AbstractUiComponent{
+		[]StaticUI{
 			NewSpriteUIComponent("╭", utils.Point{X: b.X, Y: b.Y}),             // top left
 			NewSpriteUIComponent("╮", utils.Point{X: b.X + b.W, Y: b.Y}),       // top right
 			NewSpriteUIComponent("╰", utils.Point{X: b.X, Y: b.Y + b.H}),       // bot left

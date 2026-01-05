@@ -19,13 +19,13 @@ func NewDebugPane() *DebugPane {
 	}
 }
 
-func (db *DebugPane) GetUI(state *GameState) []ui.AbstractUiComponent {
+func (db *DebugPane) GetStaticUI(state *GameState) []ui.StaticUI {
 	invaderWavePos := utils.Point{X: state.wave.BoundingBox().X, Y: state.wave.BoundingBox().Y}
 	playerPos := state.player.TopLeft()
 	playerLives := state.player.Lives
 
-	components := []ui.AbstractUiComponent{}
-	components = append(components, []ui.AbstractUiComponent{
+	components := []ui.StaticUI{}
+	components = append(components, []ui.StaticUI{
 		ui.NewSpriteUIComponent(fmt.Sprintf("wave: (x: %d, y: %d)", invaderWavePos.X, invaderWavePos.Y), db.uiPosition.Shifted(0, 1)),
 		ui.NewSpriteUIComponent(fmt.Sprintf("player: (x: %d, y: %d)", playerPos.X, playerPos.Y), db.uiPosition.Shifted(0, 2)),
 		ui.NewSpriteUIComponent(fmt.Sprintf("lives remaining: %d", playerLives), db.uiPosition.Shifted(0, 3)),

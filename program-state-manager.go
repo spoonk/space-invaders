@@ -45,20 +45,21 @@ func (p *ProgramStateManager) update() {
 	}
 }
 
-func (p *ProgramStateManager) GetUI() []ui.AbstractUiComponent {
+func (p *ProgramStateManager) GetStaticUI() []ui.StaticUI {
 	// if p.menu != nil {
 	// 	return p.menu.GetUI()
 	// }
 
 	if p.game != nil {
-		return p.game.GetUI()
+		// return p.game.GetUI()
+		return p.game.GetStaticUI()
 	}
 
 	// if p.end != nil {
 	// 	return p.end.GetUI()
 	// }
 
-	return []ui.AbstractUiComponent{}
+	return []ui.StaticUI{}
 }
 
 func NewProgramStateMaanger() *ProgramStateManager {
