@@ -47,9 +47,8 @@ func (i *Invader) GetStaticUI() []ui.StaticUI {
 
 // TODO: GetDynamicUI
 
-func (i *Invader) GetDynamicUI []ui.DynamicUI {
-	return []ui.DynamicUI
-
+func (i *Invader) GetDynamicUI() []ui.DynamicUI {
+	return []ui.DynamicUI{ui.NewDynamicUI("invader.png", i.BoundingBox)}
 }
 
 var image [][]float64 = nil

@@ -29,17 +29,14 @@ func (r *Renderer) draw(components []ui.StaticUI) {
 	// scaled := r.scaleSprite(img, &utils.Box{X: 0, Y: 0, H: 1, W: 3})
 	for i := 0; i < len(components); i++ {
 		elm := components[i]
-		// TODO: test out rasterizing here
 		text := elm.GetRasterized()
 		r.drawAtPosition(text, elm.GetTopLeft())
-		// r.drawAtPosition(scaled, elm.GetTopLeft())
 	}
 }
 
 func (r *Renderer) init() {
 	clearScreen()
 	hideCursor()
-
 }
 
 func clearScreen() {
@@ -91,7 +88,6 @@ func (r *Renderer) getScreenSize() (int, int) {
 }
 
 func (r *Renderer) gameSpaceToScreenSpace(gamePoint utils.Point) utils.Point {
-	// TODO: this will eventually need to be a bit more complicated. Need to leave some buffer room outside of the game. Can't have
 	screenWidth, screenHeight := r.getScreenSize()
 	xScalar := float64(screenWidth) / float64(constants.GAME_BOUNDARY.W)
 	yScalar := float64(screenHeight) / float64(constants.GAME_BOUNDARY.H)
@@ -103,9 +99,19 @@ func moveCursorTo(p utils.Point) {
 	fmt.Printf("\033[%d;%dH", p.Y, p.X)
 }
 
-// TODO: just make rasterization udpates here
+func (r *Renderer) ScaleHydratedImages(hydratedUI []ui.HydratedDynamicUI) []ui.StaticUI {
+	allUI := []ui.StaticUI{}
+	for _, hydratedUI := range hydratedUI {
+		scaled := r.scaleSprite(hydratedUI.Image, &hydratedUI.BoundingBox)
 
-func (r *Renderer) scaleSprite(image [][]float64, gameSpaceContainer *utils.Box) []string {
+		allUI = append(allUI,
+			[]ui.StaticUI{ui.NewMultiLineSpriteUIComponent(scaled, *hydratedUI.BoundingBox.GetTopLeft())}...)
+
+	}
+	return allUI
+}
+
+func (r *Renderer) scaleSprite(image *[][]float64, gameSpaceContainer *utils.Box) []string {
 	screenWidthPx, screenHeightPx := r.getScreenSize()
 
 	// proportion of game space taken up by bounding box
@@ -116,7 +122,7 @@ func (r *Renderer) scaleSprite(image [][]float64, gameSpaceContainer *utils.Box)
 	finalHeightPx := int32(relativeHeight * float64(screenHeightPx))
 	finalWidthPx := int32(relativeWidth * float64(screenWidthPx))
 
-	finalImage := scaleImageToResolution(&image, int(finalHeightPx), int(finalWidthPx))
+	finalImage := scaleImageToResolution(image, int(finalHeightPx), int(finalWidthPx))
 	asciified := mapImageToAscii(&finalImage)
 
 	return asciified

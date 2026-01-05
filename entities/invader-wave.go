@@ -162,9 +162,15 @@ func (w *InvaderWave) GetStaticUI() []ui.StaticUI {
 	components := []ui.StaticUI{}
 	components = append(components, ui.GetDebugBoxUI(&w.boundingBox)...)
 
+	return components
+}
+
+func (w *InvaderWave) GetDynamicUI() []ui.DynamicUI {
+	components := []ui.DynamicUI{}
+
 	for _, invaderRow := range w.Invaders {
 		for _, invader := range invaderRow {
-			components = append(components, invader.GetStaticUI()...)
+			components = append(components, invader.GetDynamicUI()...)
 		}
 	}
 

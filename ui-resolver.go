@@ -14,11 +14,12 @@ func NewImageResolver() *ImageResolver {
 }
 
 func (resolver *ImageResolver) GetHydratedUI(components []ui.DynamicUI) []ui.HydratedDynamicUI {
-	hydratedUI := make([]ui.HydratedDynamicUI, len(components))
+	hydratedUI := []ui.HydratedDynamicUI{}
 	for _, component := range components {
 		hydratedUI = append(hydratedUI, ui.HydratedDynamicUI{
-			BoundingBox: component.GetBoundingBox(),
-			Image:       resolver.resolveImage(component.GetPath())})
+			BoundingBox: component.BoundingBox,
+			Image:       resolver.resolveImage(component.Path),
+			Path:        component.Path})
 	}
 
 	return hydratedUI

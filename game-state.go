@@ -170,8 +170,8 @@ func (g *GameState) begin() {
 }
 
 func (g *GameState) GetStaticUI() []ui.StaticUI {
-
 	var allUI []ui.StaticUI
+
 	allUI = append(allUI, g.wave.GetStaticUI()...)
 	allUI = append(allUI, g.player.GetStaticUI()...)
 	allUI = append(allUI, ui.GetDebugBoxUI(g.gameBoundary)...)
@@ -193,7 +193,12 @@ func (g *GameState) GetStaticUI() []ui.StaticUI {
 }
 
 func (g *GameState) GetDynamicUI() []ui.DynamicUI {
-	return []ui.DynamicUI{}
+	allUI := []ui.DynamicUI{}
+
+	allUI = append(allUI, g.wave.GetDynamicUI()...)
+
+	return allUI
+
 }
 func NewGameState() *GameState {
 	gameBoundary := utils.Box{

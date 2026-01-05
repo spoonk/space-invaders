@@ -10,6 +10,7 @@ type DynamicUI struct {
 type HydratedDynamicUI struct {
 	BoundingBox utils.Box
 	Image       *[][]float64
+	Path        string
 }
 
 func NewDynamicUI(path string, box utils.Box) DynamicUI {

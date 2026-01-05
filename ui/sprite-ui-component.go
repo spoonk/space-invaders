@@ -18,3 +18,7 @@ func (s SpriteUIComponent) GetRasterized() []string {
 func NewSpriteUIComponent(sprite string, topLeft utils.Point) AbstractUiComponent {
 	return SpriteUIComponent{sprite: []string{sprite}, topLeft: topLeft}
 }
+
+func NewMultiLineSpriteUIComponent(sprite []string, topLeft utils.Point) AbstractUiComponent {
+	return SpriteUIComponent{sprite: sprite, topLeft: topLeft}
+}

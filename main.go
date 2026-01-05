@@ -19,6 +19,7 @@ func main() {
 
 func gameLoop() {
 	r := Renderer{center: utils.Point{X: 65, Y: 30}}
+	resolver := NewImageResolver()
 	r.init()
 
 	handler := keyboard.NewKeyboardInput()
@@ -38,11 +39,12 @@ func gameLoop() {
 	for Run {
 		program.update()
 		staticUI := program.GetStaticUI()
-		// dynamicUI := program.GetDynamicUI()
+		dynamicUI := program.GetDynamicUI()
 
-		// map dynamic -> static UI
+		hydratedUI := resolver.GetHydratedUI(dynamicUI)
+		scaledUI := r.ScaleHydratedImages(hydratedUI)
 
-		r.draw(staticUI)
+		r.draw(append(staticUI, scaledUI...))
 
 		time.Sleep(time.Duration(constants.FRAME_DURATION * constants.NANOSECOND))
 	}
