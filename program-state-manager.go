@@ -12,8 +12,7 @@ type ProgramStateManager struct {
 }
 
 func (p *ProgramStateManager) init() {
-	// p.menu = state.NewMenuState()
-	p.game = NewGameState()
+	p.menu = state.NewMenuState()
 }
 
 func (p *ProgramStateManager) update() {

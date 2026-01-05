@@ -45,9 +45,10 @@ func (i *Invader) GetStaticUI() []ui.StaticUI {
 	)
 }
 
-// TODO: GetDynamicUI
-
 func (i *Invader) GetDynamicUI() []ui.DynamicUI {
+	if i.IsDead {
+		return []ui.DynamicUI{}
+	}
 	return []ui.DynamicUI{ui.NewDynamicUI("invader.png", i.BoundingBox)}
 }
 
