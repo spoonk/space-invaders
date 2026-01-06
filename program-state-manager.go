@@ -16,7 +16,7 @@ func (p *ProgramStateManager) init() {
 }
 
 func (p *ProgramStateManager) update() {
-	// right now I have to special case everything....
+	// TODO: could clean up by making states abstract (Advance(), GetNextState(), GetStaticUI, GetDynamicUI)
 	if p.menu != nil {
 		res := p.menu.Advance()
 		if res == state.EndState() {

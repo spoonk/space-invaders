@@ -11,7 +11,6 @@ import (
 var Run = true
 
 func main() {
-	// runtime.Breakpoint()
 	// testKeyboard()
 	gameLoop()
 }
@@ -23,6 +22,8 @@ func gameLoop() {
 
 	handler := keyboard.NewKeyboardInput()
 	handler.Init()
+
+	// global game interrupt
 	handler.RegisterCallback('q', func(_ rune) { handler.Cleanup(); Run = false })
 
 	controller := keyboard.GetController()
