@@ -8,8 +8,7 @@ import (
 	"space-invaders/utils"
 
 	"golang.org/x/term"
-	_ "image/jpeg" // Register JPEG decoder
-	_ "image/png"  // Register PNG decoder
+	_ "image/png" // Register PNG decoder
 )
 
 const (
@@ -20,13 +19,11 @@ const (
 )
 
 type Renderer struct {
-	center utils.Point
+	rasterizedCache map[string][]string
 }
 
 func (r *Renderer) draw(components []ui.StaticUI) {
 	clearScreen()
-	// img, _ := utils.ReadImageToFloat64("invader.png")
-	// scaled := r.scaleSprite(img, &utils.Box{X: 0, Y: 0, H: 1, W: 3})
 	for i := 0; i < len(components); i++ {
 		elm := components[i]
 		text := elm.GetRasterized()
@@ -77,7 +74,6 @@ func (r *Renderer) normalizePosition(p utils.Point) utils.Point {
 }
 
 func (r *Renderer) getScreenSize() (int, int) {
-
 	screenWidth, screenHeight, err := term.GetSize(0)
 	if err != nil {
 		screenWidth = constants.GAME_BOUNDARY.W
@@ -102,7 +98,7 @@ func moveCursorTo(p utils.Point) {
 func (r *Renderer) ScaleHydratedImages(hydratedUI []ui.HydratedDynamicUI) []ui.StaticUI {
 	allUI := []ui.StaticUI{}
 	for _, hydratedUI := range hydratedUI {
-		scaled := r.scaleSprite(hydratedUI.Image, &hydratedUI.BoundingBox)
+		scaled := r.scaleSprite(&hydratedUI)
 
 		allUI = append(allUI,
 			[]ui.StaticUI{ui.NewMultiLineSpriteUIComponent(scaled, *hydratedUI.BoundingBox.GetTopLeft())}...)
@@ -111,24 +107,33 @@ func (r *Renderer) ScaleHydratedImages(hydratedUI []ui.HydratedDynamicUI) []ui.S
 	return allUI
 }
 
-func (r *Renderer) scaleSprite(image *[][]float64, gameSpaceContainer *utils.Box) []string {
+func (r *Renderer) scaleSprite(hydratedUI *ui.HydratedDynamicUI) []string {
 	screenWidthPx, screenHeightPx := r.getScreenSize()
 
+	key := fmt.Sprintf("%s,%d,%d", hydratedUI.Path, screenWidthPx, screenHeightPx)
+	value, ok := r.rasterizedCache[key]
+	if ok {
+		return value
+	}
+
 	// proportion of game space taken up by bounding box
-	relativeHeight := float64(gameSpaceContainer.H) / float64(constants.GAME_BOUNDARY.H)
-	relativeWidth := float64(gameSpaceContainer.W) / float64(constants.GAME_BOUNDARY.W)
+	relativeHeight := float64(hydratedUI.BoundingBox.H) / float64(constants.GAME_BOUNDARY.H)
+	relativeWidth := float64(hydratedUI.BoundingBox.W) / float64(constants.GAME_BOUNDARY.W)
 
 	// scale the image to these values
 	finalHeightPx := int32(relativeHeight * float64(screenHeightPx))
 	finalWidthPx := int32(relativeWidth * float64(screenWidthPx))
 
-	finalImage := scaleImageToResolution(image, int(finalHeightPx), int(finalWidthPx))
+	finalImage := scaleImageToResolution(hydratedUI.Image, int(finalHeightPx), int(finalWidthPx))
 	asciified := mapImageToAscii(&finalImage)
+
+	r.rasterizedCache[key] = asciified
 
 	return asciified
 }
 
 func scaleImageToResolution(image *[][]float64, height int, width int) [][]int {
+	// Code from gemini
 	src := *image
 	srcH := len(src)
 	if srcH == 0 {
