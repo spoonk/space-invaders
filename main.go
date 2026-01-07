@@ -16,7 +16,7 @@ func main() {
 }
 
 func gameLoop() {
-	r := Renderer{rasterizedCache: make(map[string][]string)}
+	r := Renderer{interpolatedCache: make(map[string][]string)}
 	resolver := NewImageResolver()
 	r.init()
 
@@ -64,7 +64,7 @@ func testKeyboard() {
 	controller := keyboard.NewKeyBoardInputController()
 	controller.Init(handler)
 
-	r := Renderer{rasterizedCache: make(map[string][]string)}
+	r := Renderer{interpolatedCache: make(map[string][]string)}
 	r.init()
 
 	go handler.Loop()

@@ -19,14 +19,14 @@ const (
 )
 
 type Renderer struct {
-	rasterizedCache map[string][]string
+	interpolatedCache map[string][]string
 }
 
 func (r *Renderer) draw(components []ui.StaticUI) {
 	clearScreen()
 	for i := 0; i < len(components); i++ {
 		elm := components[i]
-		text := elm.GetRasterized()
+		text := elm.GetUI()
 		r.drawAtPosition(text, elm.GetTopLeft())
 	}
 }
@@ -111,7 +111,7 @@ func (r *Renderer) scaleSprite(hydratedUI *ui.HydratedDynamicUI) []string {
 	screenWidthPx, screenHeightPx := r.getScreenSize()
 
 	key := fmt.Sprintf("%s,%d,%d", hydratedUI.Path, screenWidthPx, screenHeightPx)
-	value, ok := r.rasterizedCache[key]
+	value, ok := r.interpolatedCache[key]
 	if ok {
 		return value
 	}
@@ -127,7 +127,7 @@ func (r *Renderer) scaleSprite(hydratedUI *ui.HydratedDynamicUI) []string {
 	finalImage := scaleImageToResolution(hydratedUI.Image, int(finalHeightPx), int(finalWidthPx))
 	asciified := mapImageToAscii(&finalImage)
 
-	r.rasterizedCache[key] = asciified
+	r.interpolatedCache[key] = asciified
 
 	return asciified
 }

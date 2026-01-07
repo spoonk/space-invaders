@@ -31,12 +31,14 @@ func (g *GameState) advance() state.State {
 	if g.wave.IsAtBottom() {
 		return state.EndState()
 	}
+
 	g.updatePlayerLaser()
 	g.updateInvaderLasers()
 
 	if g.player.Lives == 0 {
 		return state.EndState()
 	}
+
 	g.player.Move()
 
 	return state.ContinueState()
@@ -61,38 +63,36 @@ func (g *GameState) updatePlayerLaser() {
 }
 
 func (g *GameState) updateInvaderLasers() {
-	// we have 55 invaders, that's 55 entities updating per loop
-	// the probability we fire should be proportional to the number of non-dead invaders
-	// then just pick some scalar and tune it lol
-
-	// can achieve this probability by looping through invaders & deciding to fire for each one
-
-	// need to update current lasers and determine whether or not to fire a new one
 	nextLaserInd := -1
 
-	for ind, las := range g.invaderLasers {
-		if las == nil {
+	for ind, currLaser := range g.invaderLasers {
+		if currLaser == nil {
 			nextLaserInd = ind
 		} else {
-			las.Update()
-			g.checkInvaderLaserIntersection()
-			if las.Position.Y > g.gameBoundary.Y+g.gameBoundary.H {
+			currLaser.Update()
+			if g.checkInvaderLaserIntersection(currLaser) {
+				g.player.RegisterHit()
+				g.invaderLasers[ind] = nil
+			}
+			if currLaser.Position.Y > g.gameBoundary.Y+g.gameBoundary.H {
 				g.invaderLasers[ind] = nil
 			}
 		}
 	}
 
-	// (try to) insert next laser
-
+	// all laser slots currently in use
 	if nextLaserInd == -1 {
 		return
 	}
 
+	// Determine who shoots next
 	for _, row := range g.wave.Invaders {
 		for _, inv := range row {
 			if !inv.IsDead {
+				// note: this is pretty biased towards invaders in the top-left
+				// it's very unlikely that an invader in the bottom right will ever have a chance to fire a laser
+				// TODO: shuffle invaders, then evaluate probabilities
 				if rand.Float32() < constants.INVADER_FIRE_PROB {
-					// new laser at position
 					laserPos := inv.BoundingBox.GetTopLeft().Shifted(1, 1)
 					g.invaderLasers[nextLaserInd] = entities.NewLaser(&laserPos, 1)
 				}
@@ -135,19 +135,9 @@ func (g *GameState) checkLaserIntersection() {
 	}
 }
 
-func (g *GameState) checkInvaderLaserIntersection() {
-	for ind, laser := range g.invaderLasers {
-		if laser == nil {
-			continue
-		}
-
-		playerBox := g.player.BoundingBox()
-
-		if playerBox.IsPointWithin(&laser.Position) {
-			g.player.RegisterHit()
-			g.invaderLasers[ind] = nil
-		}
-	}
+func (g *GameState) checkInvaderLaserIntersection(laser *entities.Laser) bool {
+	playerBox := g.player.BoundingBox()
+	return playerBox.IsPointWithin(&laser.Position)
 }
 
 func (g *GameState) handleShoot() {

@@ -15,7 +15,7 @@ func (s SpriteUIComponent) GetTopLeft() utils.Point {
 	return s.topLeft
 }
 
-func (s SpriteUIComponent) GetRasterized() []string {
+func (s SpriteUIComponent) GetUI() []string {
 	return s.sprite
 }
 

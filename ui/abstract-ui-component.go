@@ -6,10 +6,10 @@ import (
 
 type AbstractUiComponent interface {
 	GetTopLeft() utils.Point
-	GetRasterized() []string
+	GetUI() []string
 }
 
 type StaticUI interface {
 	GetTopLeft() utils.Point
-	GetRasterized() []string
+	GetUI() []string
 }
