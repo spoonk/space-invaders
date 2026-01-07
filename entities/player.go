@@ -26,7 +26,7 @@ func (p *Player) GetStaticUI() []ui.StaticUI {
 }
 
 func (p *Player) GetDynamicUI() []ui.DynamicUI {
-	return []ui.DynamicUI{ui.NewDynamicUI("player.png", *p.BoundingBox())}
+	return []ui.DynamicUI{ui.NewDynamicUI("images/player.png", *p.BoundingBox())}
 }
 
 func NewPlayer() *Player {

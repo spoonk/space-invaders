@@ -49,17 +49,10 @@ func (i *Invader) GetDynamicUI() []ui.DynamicUI {
 	if i.IsDead {
 		return []ui.DynamicUI{}
 	}
-	return []ui.DynamicUI{ui.NewDynamicUI("invader.png", i.BoundingBox)}
+	return []ui.DynamicUI{ui.NewDynamicUI("images/invader.png", i.BoundingBox)}
 }
 
 var image [][]float64 = nil
-
-func (i *Invader) GetImage() *[][]float64 {
-	if image == nil {
-		image, _ = utils.ReadImageToFloat64("invader.png")
-	}
-	return &image
-}
 
 func (i *Invader) topLeft() utils.Point {
 	return i.pos
