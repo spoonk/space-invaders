@@ -45,9 +45,11 @@ func (p *Player) Move() {
 	press := p.controller.GetCurrentKeypress()
 
 	currPos := p.Pos
-	if press == 'a' {
+	switch press {
+	case 'a':
 		p.MoveTo(utils.Point{X: currPos.X - 1, Y: currPos.Y})
-	} else if press == 'd' {
+	case 'd':
 		p.MoveTo(utils.Point{X: currPos.X + 1, Y: currPos.Y})
+
 	}
 }

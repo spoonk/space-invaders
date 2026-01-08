@@ -1,6 +1,7 @@
 package state
 
 import (
+	"fmt"
 	"space-invaders/keyboard"
 	"space-invaders/ui"
 )
@@ -15,5 +16,5 @@ func (e *GameOverState) Advance() State {
 }
 
 func (e *GameOverState) GetStaticUI() []ui.StaticUI {
-	return []ui.StaticUI{ui.NewCenteredTextUIComponent("GAME OVER, you scored %d points. Press r to restart or q to quit")}
+	return []ui.StaticUI{ui.NewCenteredTextUIComponent(fmt.Sprintf("GAME OVER, you scored %d points. Press r to restart or q to quit", e.Score))}
 }
