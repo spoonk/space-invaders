@@ -176,3 +176,15 @@ func (w *InvaderWave) GetDynamicUI() []ui.DynamicUI {
 
 	return components
 }
+
+func (w *InvaderWave) GetFallbackUI() []ui.StaticUI {
+	components := []ui.StaticUI{}
+
+	for _, invaderRow := range w.Invaders {
+		for _, invader := range invaderRow {
+			components = append(components, invader.GetFallbackUI()...)
+		}
+	}
+
+	return components
+}

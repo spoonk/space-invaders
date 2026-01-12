@@ -21,7 +21,7 @@ func (p *Player) TopLeft() utils.Point {
 	return p.Pos
 }
 
-func (p *Player) GetStaticUI() []ui.StaticUI {
+func (p *Player) GetFallbackUI() []ui.StaticUI {
 	return []ui.StaticUI{ui.NewSpriteUIComponent("^-^", p.TopLeft())}
 }
 

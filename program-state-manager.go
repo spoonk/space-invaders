@@ -61,6 +61,14 @@ func (p *ProgramStateManager) GetStaticUI() []ui.StaticUI {
 	return []ui.StaticUI{}
 }
 
+func (p *ProgramStateManager) GetFallbackUI() []ui.StaticUI {
+	if p.game == nil {
+		return []ui.StaticUI{}
+	}
+
+	return p.game.GetFallbackUI()
+}
+
 func NewProgramStateMaanger() *ProgramStateManager {
 	return &ProgramStateManager{}
 }

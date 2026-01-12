@@ -41,10 +41,17 @@ func gameLoop() {
 		staticUI := program.GetStaticUI()
 		dynamicUI := program.GetDynamicUI()
 
-		hydratedUI := resolver.GetHydratedUI(dynamicUI)
-		scaledUI := r.ScaleHydratedImages(hydratedUI)
+		allStaticUI := staticUI
+		if r.shouldRenderFallbackUI() {
+			allStaticUI = append(allStaticUI, program.GetFallbackUI()...)
+		} else {
+			hydratedUI := resolver.GetHydratedUI(dynamicUI)
+			scaledUI := r.ScaleHydratedImages(hydratedUI)
+			allStaticUI = append(allStaticUI, scaledUI...)
 
-		r.draw(append(staticUI, scaledUI...))
+		}
+
+		r.draw(allStaticUI)
 
 		time.Sleep(time.Duration(constants.FRAME_DURATION * constants.NANOSECOND))
 	}

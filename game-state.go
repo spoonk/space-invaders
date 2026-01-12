@@ -191,6 +191,15 @@ func (g *GameState) GetDynamicUI() []ui.DynamicUI {
 	return allUI
 
 }
+func (g *GameState) GetFallbackUI() []ui.StaticUI {
+	allUI := []ui.StaticUI{}
+
+	allUI = append(allUI, g.wave.GetFallbackUI()...)
+	allUI = append(allUI, g.player.GetFallbackUI()...)
+
+	return allUI
+}
+
 func NewGameState() *GameState {
 	gameBoundary := utils.Box{
 		X: constants.GAME_BOUNDARY.X, Y: constants.GAME_BOUNDARY.Y, H: constants.GAME_BOUNDARY.H, W: constants.GAME_BOUNDARY.W,

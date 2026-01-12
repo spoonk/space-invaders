@@ -34,7 +34,7 @@ func (i *Invader) moveBy(x int, y int) {
 	i.BoundingBox.Y += y
 }
 
-func (i *Invader) GetStaticUI() []ui.StaticUI {
+func (i *Invader) GetFallbackUI() []ui.StaticUI {
 	if i.IsDead {
 		return []ui.StaticUI{}
 	}
@@ -51,8 +51,6 @@ func (i *Invader) GetDynamicUI() []ui.DynamicUI {
 	}
 	return []ui.DynamicUI{ui.NewDynamicUI("images/invader.png", i.BoundingBox)}
 }
-
-var image [][]float64 = nil
 
 func (i *Invader) topLeft() utils.Point {
 	return i.pos

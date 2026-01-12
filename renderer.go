@@ -83,6 +83,11 @@ func (r *Renderer) getScreenSize() (int, int) {
 	return screenWidth, screenHeight
 }
 
+func (r *Renderer) shouldRenderFallbackUI() bool {
+	_, screenHeight := r.getScreenSize()
+	return screenHeight < 100
+}
+
 func (r *Renderer) gameSpaceToScreenSpace(gamePoint utils.Point) utils.Point {
 	screenWidth, screenHeight := r.getScreenSize()
 	xScalar := float64(screenWidth) / float64(constants.GAME_BOUNDARY.W)
