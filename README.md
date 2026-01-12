@@ -1,5 +1,10 @@
 # Terminal Space Invaders
 
+This project is a low-fidelity implementation of Space Invaders, playable directly in the terminal!
+The primary purpose of this was for me to learn `Golang` and explore how games may implement an event loop and player input.
+It also features dynamic resolution scaling where images are
+resized then transformed into ascii characters, which are then drawn to the screen.
+
 ## Running the game
 
 This program depends on `go` and `cmake`.
@@ -15,5 +20,3 @@ Then run the project with:
 ```
 make run
 ```
-
-## Features
