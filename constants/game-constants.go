@@ -22,7 +22,7 @@ const (
 
 const (
 	NANOSECOND     = 1000000
-	FRAME_DURATION = 1000 / 60
+	FRAME_DURATION = 1000 / 24
 )
 
 const (
